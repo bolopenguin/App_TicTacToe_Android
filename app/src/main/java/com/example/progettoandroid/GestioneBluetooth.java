@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class GestioneBluetooth extends AppCompatActivity
         implements AdapterView.OnItemClickListener{
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "GestioneBluetooth";
 
     ImageButton btnONOFF;
 
@@ -124,7 +124,7 @@ public class GestioneBluetooth extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_gestione_bluetooth);
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 

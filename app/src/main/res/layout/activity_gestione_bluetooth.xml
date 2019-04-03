@@ -56,9 +56,5 @@
         app:layout_constraintHorizontal_bias="0.179"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    android:textColor="#fafafa"
-    app:layout_constraintEnd_toStartOf="@+id/btnFindUnpairedDevices"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
