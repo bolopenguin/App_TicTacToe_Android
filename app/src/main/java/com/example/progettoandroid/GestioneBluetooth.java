@@ -1,5 +1,6 @@
 package com.example.progettoandroid;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -7,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -187,6 +189,11 @@ public class GestioneBluetooth extends AppCompatActivity
 
         Log.d(TAG, "btnDiscover: Looking for unpaired devices.");
         Toast.makeText(getApplicationContext(), "Discovering", Toast.LENGTH_SHORT).show();
+
+        int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 1;
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
 
         if(mBluetoothAdapter.isDiscovering()){
             mBluetoothAdapter.cancelDiscovery();
