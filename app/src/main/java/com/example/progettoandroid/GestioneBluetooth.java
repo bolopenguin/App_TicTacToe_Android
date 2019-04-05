@@ -256,6 +256,7 @@ public class GestioneBluetooth extends AppCompatActivity
         server.start();
     }
 
+    //Server
     private class AcceptThread extends Thread {
         private final BluetoothServerSocket mmServerSocket;
 
@@ -285,19 +286,19 @@ public class GestioneBluetooth extends AppCompatActivity
                     socket = mmServerSocket.accept();
 
                     Log.d(TAG, "run: RFCOM server socket accepted connection.");
-                    break;
+
                 } catch (IOException e) {
                     Log.e(TAG, "AcceptThread: IOException: " + e.getMessage());
                     break;
                 }
 
-            //    if (socket != null) {
+
+                if (socket != null) {
                     // A connection was accepted. Perform work associated with
                     // the connection in a separate thread.
-                    //manageMyConnectedSocket(socket);
-                    //mmServerSocket.close();
-            //        break;
-            //    }
+
+                    //cambiare activity
+                }
             }
         }
 
@@ -311,6 +312,7 @@ public class GestioneBluetooth extends AppCompatActivity
         }
     }
 
+    //client
     private class ConnectThread extends Thread {
         private final BluetoothSocket mmSocket;
         private final BluetoothDevice mmDevice;
@@ -353,8 +355,10 @@ public class GestioneBluetooth extends AppCompatActivity
                 return;
             }
 
+
             // The connection attempt succeeded. Perform work associated with
             // the connection in a separate thread.
+            //cambiare activity
             //manageMyConnectedSocket(mmSocket);
         }
 
