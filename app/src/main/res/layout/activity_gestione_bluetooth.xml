@@ -28,17 +28,14 @@
     <ListView
         android:id="@+id/lvNewDevices"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="200dp"
         android:layout_below="@id/btnFindUnpairedDevices"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="127dp"
+        android:layout_marginTop="104dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnConnection"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.048" />
+        app:layout_constraintTop_toBottomOf="@+id/btnFindUnpairedDevices" />
 
     <ImageButton
         android:id="@+id/btnONOFF"
@@ -49,24 +46,27 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="36dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/rounded_button"
         android:icon="@drawable/offon"
         android:scaleType="fitCenter"
         android:src="@drawable/offon"
+        app:layout_constraintBottom_toTopOf="@+id/lvNewDevices"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.179"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/btnConnection"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="324dp"
+        android:layout_marginTop="40dp"
         android:onClick="btnConnection"
         android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lvNewDevices" />
 
