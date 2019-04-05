@@ -285,6 +285,7 @@ public class GestioneBluetooth extends AppCompatActivity
                     socket = mmServerSocket.accept();
 
                     Log.d(TAG, "run: RFCOM server socket accepted connection.");
+                    break;
                 } catch (IOException e) {
                     Log.e(TAG, "AcceptThread: IOException: " + e.getMessage());
                     break;
