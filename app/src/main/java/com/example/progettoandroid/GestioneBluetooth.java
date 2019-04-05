@@ -247,6 +247,7 @@ public class GestioneBluetooth extends AppCompatActivity
     public void btnClient(View view) {
         ConnectThread connect = new ConnectThread(serverDevice, MY_UUID);
         connect.start();
+
     }
 
     public void btnServer(View view) {
@@ -266,21 +267,26 @@ public class GestioneBluetooth extends AppCompatActivity
                 // MY_UUID is the app's UUID string, also used by the client code.
                 tmp = mBluetoothAdapter.listenUsingRfcommWithServiceRecord("NAME", MY_UUID);
 
-                Log.d(TAG, "run: RFCOM server socket accepted connection.");
+                Log.d(TAG, "AcceptThread: Setting up Server using: " + MY_UUID);
             } catch (IOException e) {
-                Log.e(TAG, "Socket's listen() method failed", e);
+                Log.e(TAG, "AcceptThread: IOException: " + e.getMessage());
             }
             mmServerSocket = tmp;
         }
 
         public void run() {
+            Log.d(TAG, "run: AcceptThread Running.");
             BluetoothSocket socket = null;
             // Keep listening until exception occurs or a socket is returned.
             while (true) {
                 try {
+                    Log.d(TAG, "run: RFCOM server socket start...");
+
                     socket = mmServerSocket.accept();
+
+                    Log.d(TAG, "run: RFCOM server socket accepted connection.");
                 } catch (IOException e) {
-                    Log.e(TAG, "Socket's accept() method failed", e);
+                    Log.e(TAG, "AcceptThread: IOException: " + e.getMessage());
                     break;
                 }
 
@@ -309,6 +315,7 @@ public class GestioneBluetooth extends AppCompatActivity
         private final BluetoothDevice mmDevice;
 
         public ConnectThread(BluetoothDevice device, UUID myUuid) {
+            Log.d(TAG, "ConnectThread: started.");
             // Use a temporary object that is later assigned to mmSocket
             // because mmSocket is final.
             BluetoothSocket tmp = null;
@@ -328,6 +335,8 @@ public class GestioneBluetooth extends AppCompatActivity
             // Cancel discovery because it otherwise slows down the connection.
             mBluetoothAdapter.cancelDiscovery();
 
+            Log.i(TAG, "RUN mConnectThread ");
+
             try {
                 // Connect to the remote device through the socket. This call blocks
                 // until it succeeds or throws an exception.
@@ -336,8 +345,9 @@ public class GestioneBluetooth extends AppCompatActivity
                 // Unable to connect; close the socket and return.
                 try {
                     mmSocket.close();
+                    Log.d(TAG, "run: Closed Socket.");
                 } catch (IOException closeException) {
-                    Log.e(TAG, "Could not close the client socket", closeException);
+                    Log.e(TAG, "run: ConnectThread: Could not connect to UUID: " + MY_UUID);
                 }
                 return;
             }
