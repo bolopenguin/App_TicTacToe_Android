@@ -298,6 +298,8 @@ public class GestioneBluetooth extends AppCompatActivity
                     // the connection in a separate thread.
 
                     //cambiare activity
+
+                    break;
                 }
             }
         }
