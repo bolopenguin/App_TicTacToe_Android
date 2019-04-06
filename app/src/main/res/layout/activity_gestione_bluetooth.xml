@@ -11,18 +11,17 @@
         android:id="@+id/btnFindUnpairedDevices"
         android:layout_width="72dp"
         android:layout_height="74dp"
-        android:layout_marginStart="30dp"
         android:layout_marginTop="36dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/rounded_button"
         android:icon="@drawable/lente"
         android:onClick="btnDiscover"
         android:scaleType="fitCenter"
         android:src="@drawable/lente"
         android:textColor="#fafafa"
+        app:layout_constraintBottom_toTopOf="@+id/lvNewDevices"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.602"
-        app:layout_constraintStart_toEndOf="@+id/btnONOFF"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
@@ -43,17 +42,14 @@
         android:layout_height="74dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="36dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="2dp"
         android:background="@drawable/rounded_button"
         android:icon="@drawable/offon"
         android:scaleType="fitCenter"
         android:src="@drawable/offon"
         app:layout_constraintBottom_toTopOf="@+id/lvNewDevices"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.179"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
@@ -62,26 +58,24 @@
         android:id="@+id/btnServer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="44dp"
         android:onClick="btnServer"
         android:text="Server"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.154"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lvNewDevices"
-        app:layout_constraintVertical_bias="0.022" />
+        app:layout_constraintTop_toBottomOf="@+id/lvNewDevices" />
 
     <Button
         android:id="@+id/btnClient"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="44dp"
         android:onClick="btnClient"
         android:text="Client"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.823"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnServer" />
+        app:layout_constraintTop_toBottomOf="@+id/lvNewDevices" />
 
 </android.support.constraint.ConstraintLayout>

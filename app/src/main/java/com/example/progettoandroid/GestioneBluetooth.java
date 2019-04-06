@@ -15,7 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -28,7 +27,7 @@ import java.util.UUID;
 public class GestioneBluetooth extends AppCompatActivity
         implements AdapterView.OnItemClickListener{
 
-    private static final String TAG = "GestioneBluetooth";
+    static final String TAG = "GestioneBluetooth";
 
     ImageButton btnONOFF;
 
@@ -36,10 +35,10 @@ public class GestioneBluetooth extends AppCompatActivity
     public DeviceListAdapter mDeviceListAdapter;
     public ArrayList<BluetoothDevice> mBTDevices = new ArrayList<>();
 
-    BluetoothAdapter mBluetoothAdapter;
+    static BluetoothAdapter mBluetoothAdapter;
     BluetoothDevice mBTDevice;
 
-    private static final UUID MY_UUID =
+    static final UUID MY_UUID =
             UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
     public BluetoothDevice serverDevice;
 
@@ -144,7 +143,7 @@ public class GestioneBluetooth extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: enabling/disabling bluetooth.");
-                enableDisableBT();
+                btnOnOff();
             }
         });
 
@@ -161,7 +160,7 @@ public class GestioneBluetooth extends AppCompatActivity
 
 
     //cosa si fa quando si accende o spegne il bluetooth
-    public void enableDisableBT(){
+    public void btnOnOff(){
         if(mBluetoothAdapter == null){
 
             Toast.makeText(getApplicationContext(), "Not Possible", Toast.LENGTH_SHORT).show();
@@ -171,10 +170,12 @@ public class GestioneBluetooth extends AppCompatActivity
         if(!mBluetoothAdapter.isEnabled()){
 
             Toast.makeText(getApplicationContext(), "Enabling", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "enableDisableBT: enabling BT and make device discoverable.");
 
-            Log.d(TAG, "enableDisableBT: enabling BT.");
-            Intent enableBTIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivity(enableBTIntent);
+            Intent discoverableIntent =
+                    new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 30);
+            startActivity(discoverableIntent);
 
             IntentFilter BTIntent = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
             registerReceiver(mBroadcastReceiver1, BTIntent);
@@ -195,7 +196,6 @@ public class GestioneBluetooth extends AppCompatActivity
     //cosa si fa quando si abilita la discovery
     public void btnDiscover(View view) {
 
-        Log.d(TAG, "btnDiscover: Looking for unpaired devices.");
         Toast.makeText(getApplicationContext(), "Discovering", Toast.LENGTH_SHORT).show();
 
         int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 1;
@@ -208,12 +208,14 @@ public class GestioneBluetooth extends AppCompatActivity
             Log.d(TAG, "btnDiscover: Canceling discovery.");
 
             mBluetoothAdapter.startDiscovery();
+            Log.d(TAG, "btnDiscover: Looking for unpaired devices.");
 
             IntentFilter discoverDevicesIntent = new IntentFilter(BluetoothDevice.ACTION_FOUND);
             registerReceiver(mBroadcastReceiver2, discoverDevicesIntent);
         }
         if(!mBluetoothAdapter.isDiscovering()){
             mBluetoothAdapter.startDiscovery();
+            Log.d(TAG, "btnDiscover: Looking for unpaired devices.");
 
             IntentFilter discoverDevicesIntent = new IntentFilter(BluetoothDevice.ACTION_FOUND);
             registerReceiver(mBroadcastReceiver2, discoverDevicesIntent);
@@ -224,6 +226,7 @@ public class GestioneBluetooth extends AppCompatActivity
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         //first cancel discovery because its very memory intensive.
+        Log.d(TAG, "btnDiscover: Canceling discovery.");
         mBluetoothAdapter.cancelDiscovery();
 
         Toast.makeText(getApplicationContext(), "Bonding", Toast.LENGTH_SHORT).show();
@@ -245,6 +248,7 @@ public class GestioneBluetooth extends AppCompatActivity
     }
 
     public void btnClient(View view) {
+        //aggiungere codice per non far crashare
         ConnectThread connect = new ConnectThread(serverDevice, MY_UUID);
         connect.start();
 
@@ -254,124 +258,6 @@ public class GestioneBluetooth extends AppCompatActivity
 
         AcceptThread server = new AcceptThread();
         server.start();
-    }
-
-    //Server
-    private class AcceptThread extends Thread {
-        private final BluetoothServerSocket mmServerSocket;
-
-        public AcceptThread() {
-            // Use a temporary object that is later assigned to mmServerSocket
-            // because mmServerSocket is final.
-            BluetoothServerSocket tmp = null;
-            try {
-                // MY_UUID is the app's UUID string, also used by the client code.
-                tmp = mBluetoothAdapter.listenUsingRfcommWithServiceRecord("NAME", MY_UUID);
-
-                Log.d(TAG, "AcceptThread: Setting up Server using: " + MY_UUID);
-            } catch (IOException e) {
-                Log.e(TAG, "AcceptThread: IOException: " + e.getMessage());
-            }
-            mmServerSocket = tmp;
-        }
-
-        public void run() {
-            Log.d(TAG, "run: AcceptThread Running.");
-            BluetoothSocket socket = null;
-            // Keep listening until exception occurs or a socket is returned.
-            while (true) {
-                try {
-                    Log.d(TAG, "run: RFCOM server socket start...");
-
-                    socket = mmServerSocket.accept();
-
-                    Log.d(TAG, "run: RFCOM server socket accepted connection.");
-
-                } catch (IOException e) {
-                    Log.e(TAG, "AcceptThread: IOException: " + e.getMessage());
-                    break;
-                }
-
-
-                if (socket != null) {
-                    // A connection was accepted. Perform work associated with
-                    // the connection in a separate thread.
-
-                    //cambiare activity
-
-                    break;
-                }
-            }
-        }
-
-        // Closes the connect socket and causes the thread to finish.
-        public void cancel() {
-            try {
-                mmServerSocket.close();
-            } catch (IOException e) {
-                Log.e(TAG, "Could not close the connect socket", e);
-            }
-        }
-    }
-
-    //client
-    private class ConnectThread extends Thread {
-        private final BluetoothSocket mmSocket;
-        private final BluetoothDevice mmDevice;
-
-        public ConnectThread(BluetoothDevice device, UUID myUuid) {
-            Log.d(TAG, "ConnectThread: started.");
-            // Use a temporary object that is later assigned to mmSocket
-            // because mmSocket is final.
-            BluetoothSocket tmp = null;
-            mmDevice = device;
-
-            try {
-                // Get a BluetoothSocket to connect with the given BluetoothDevice.
-                // MY_UUID is the app's UUID string, also used in the server code.
-                tmp = device.createRfcommSocketToServiceRecord(myUuid);
-            } catch (IOException e) {
-                Log.e(TAG, "Socket's create() method failed", e);
-            }
-            mmSocket = tmp;
-        }
-
-        public void run() {
-            // Cancel discovery because it otherwise slows down the connection.
-            mBluetoothAdapter.cancelDiscovery();
-
-            Log.i(TAG, "RUN mConnectThread ");
-
-            try {
-                // Connect to the remote device through the socket. This call blocks
-                // until it succeeds or throws an exception.
-                mmSocket.connect();
-            } catch (IOException connectException) {
-                // Unable to connect; close the socket and return.
-                try {
-                    mmSocket.close();
-                    Log.d(TAG, "run: Closed Socket.");
-                } catch (IOException closeException) {
-                    Log.e(TAG, "run: ConnectThread: Could not connect to UUID: " + MY_UUID);
-                }
-                return;
-            }
-
-
-            // The connection attempt succeeded. Perform work associated with
-            // the connection in a separate thread.
-            //cambiare activity
-            //manageMyConnectedSocket(mmSocket);
-        }
-
-        // Closes the client socket and causes the thread to finish.
-        public void cancel() {
-            try {
-                mmSocket.close();
-            } catch (IOException e) {
-                Log.e(TAG, "Could not close the client socket", e);
-            }
-        }
     }
 
 }
