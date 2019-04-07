@@ -28,6 +28,7 @@ public class GestioneBluetooth extends AppCompatActivity
         implements AdapterView.OnItemClickListener{
 
     static final String TAG = "GestioneBluetooth";
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     ImageButton btnONOFF;
 
@@ -260,4 +261,9 @@ public class GestioneBluetooth extends AppCompatActivity
         server.start();
     }
 
+    public void launchSecondActivity(View view) {
+        Log.d(LOG_TAG, "Button clicked!");
+        Intent intent = new Intent(this, Main2Activity.class);
+        startActivity(intent);
+    }
 }
