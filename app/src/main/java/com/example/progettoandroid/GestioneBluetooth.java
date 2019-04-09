@@ -79,8 +79,7 @@ public class GestioneBluetooth extends AppCompatActivity
             if (action.equals(BluetoothDevice.ACTION_FOUND)){
                 //prende dispositivo dall'intent e lo salva in device
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                //aggiunge il device alla lista se ha un nome ben definito
-                if(!device.getName().isEmpty()){
+                //aggiunge il device alla lista
                     mBTDevices.add(device);
                     Log.d(TAG, "onReceive: " + device.getName() + ": " + device.getAddress());
 
@@ -88,7 +87,6 @@ public class GestioneBluetooth extends AppCompatActivity
                     //collegamento fra dati e layout diretto, prende l'oggetto di tipo layout e lo mette nella
                     //list view
                     lvNewDevices.setAdapter(mDeviceListAdapter);
-                }
             }
         }
     };
