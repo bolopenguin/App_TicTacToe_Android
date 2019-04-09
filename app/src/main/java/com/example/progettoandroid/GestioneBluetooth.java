@@ -3,8 +3,6 @@ package com.example.progettoandroid;
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothServerSocket;
-import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -81,14 +79,16 @@ public class GestioneBluetooth extends AppCompatActivity
             if (action.equals(BluetoothDevice.ACTION_FOUND)){
                 //prende dispositivo dall'intent e lo salva in device
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                //aggiunge il device alla lista
-                mBTDevices.add(device);
-                Log.d(TAG, "onReceive: " + device.getName() + ": " + device.getAddress());
-                //
-                mDeviceListAdapter = new DeviceListAdapter(context, R.layout.device_adapter_view, mBTDevices);
-                //collegamento fra dati e layout diretto, prende l'oggetto di tipo layout e lo mette nella
-                //list view
-                lvNewDevices.setAdapter(mDeviceListAdapter);
+                //aggiunge il device alla lista se ha un nome ben definito
+                if(!device.getName().isEmpty()){
+                    mBTDevices.add(device);
+                    Log.d(TAG, "onReceive: " + device.getName() + ": " + device.getAddress());
+
+                    mDeviceListAdapter = new DeviceListAdapter(context, R.layout.device_adapter_view, mBTDevices);
+                    //collegamento fra dati e layout diretto, prende l'oggetto di tipo layout e lo mette nella
+                    //list view
+                    lvNewDevices.setAdapter(mDeviceListAdapter);
+                }
             }
         }
     };
@@ -249,10 +249,11 @@ public class GestioneBluetooth extends AppCompatActivity
     }
 
     public void btnClient(View view) {
-        //aggiungere codice per non far crashare
-        ConnectThread connect = new ConnectThread(serverDevice, MY_UUID);
-        connect.start();
-
+        //controllo di aver selezionato un device dalla lista
+        if (serverDevice != null) {
+            ConnectThread connect = new ConnectThread(serverDevice, MY_UUID);
+            connect.start();
+        }
     }
 
     public void btnServer(View view) {
@@ -262,7 +263,7 @@ public class GestioneBluetooth extends AppCompatActivity
     }
 
     public void launchSecondActivity(View view) {
-        Log.d(LOG_TAG, "Button clicked!");
+        Log.d(TAG, "Avvio seconda Activity");
         Intent intent = new Intent(this, Main2Activity.class);
         startActivity(intent);
     }
