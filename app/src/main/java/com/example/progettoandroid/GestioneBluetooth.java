@@ -17,16 +17,12 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.UUID;
-
 
 public class GestioneBluetooth extends AppCompatActivity
         implements AdapterView.OnItemClickListener{
 
-    static final String TAG = "GestioneBluetooth";
-    private static final String LOG_TAG = MainActivity.class.getSimpleName();
+    final String TAG = "GestioneBluetooth";
 
     ImageButton btnONOFF;
 
@@ -37,9 +33,7 @@ public class GestioneBluetooth extends AppCompatActivity
     static BluetoothAdapter mBluetoothAdapter;
     BluetoothDevice mBTDevice;
 
-    static final UUID MY_UUID =
-            UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
-    public BluetoothDevice serverDevice;
+    public static BluetoothDevice serverDevice;
 
     // Create a BroadcastReceiver for ACTION_FOUND
     private final BroadcastReceiver mBroadcastReceiver1 = new BroadcastReceiver() {
@@ -102,22 +96,22 @@ public class GestioneBluetooth extends AppCompatActivity
                 //3 cases:
                 //case1: bonded already
                 if (mDevice.getBondState() == BluetoothDevice.BOND_BONDED){
-                    Log.d(TAG, "BroadcastReceiver: BOND_BONDED.");
+                    Log.d(TAG, "BroadcastReceiver3: BOND_BONDED.");
                     //inside BroadcastReceiver4
+                    Toast.makeText(getApplicationContext(), "Bonded", Toast.LENGTH_SHORT).show();
                     mBTDevice = mDevice;
                 }
-                //case2: creating a bone
+                //case2: creating a bond
                 if (mDevice.getBondState() == BluetoothDevice.BOND_BONDING) {
-                    Log.d(TAG, "BroadcastReceiver: BOND_BONDING.");
+                    Log.d(TAG, "BroadcastReceiver3: BOND_BONDING.");
                 }
                 //case3: breaking a bond
                 if (mDevice.getBondState() == BluetoothDevice.BOND_NONE) {
-                    Log.d(TAG, "BroadcastReceiver: BOND_NONE.");
+                    Log.d(TAG, "BroadcastReceiver3: BOND_NONE.");
                 }
             }
         }
     };
-
 
 
     @Override
@@ -152,9 +146,10 @@ public class GestioneBluetooth extends AppCompatActivity
         lvNewDevices = (ListView) findViewById(R.id.lvNewDevices);
         lvNewDevices.setOnItemClickListener(GestioneBluetooth.this);
 
-        //Broadcasts when bond state changes (ie:pairing)
-        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
-        registerReceiver(mBroadcastReceiver3, filter);
+        //Broadcasts when bond state changes pairing and connecting
+        IntentFilter filter1 = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
+        registerReceiver(mBroadcastReceiver3, filter1);
+
     }
 
 
@@ -171,10 +166,7 @@ public class GestioneBluetooth extends AppCompatActivity
             Toast.makeText(getApplicationContext(), "Enabling", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "enableDisableBT: enabling BT and make device discoverable.");
 
-            Intent discoverableIntent =
-                    new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 30);
-            startActivity(discoverableIntent);
+            abilitaDiscoverabilty();
 
             IntentFilter BTIntent = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
             registerReceiver(mBroadcastReceiver1, BTIntent);
@@ -192,6 +184,14 @@ public class GestioneBluetooth extends AppCompatActivity
 
     }
 
+    //abilita la discoverability, se bt è spento lo accende
+    public  void abilitaDiscoverabilty(){
+        Intent discoverableIntent =
+                new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+        discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 180);
+        startActivity(discoverableIntent);
+    }
+
     //cosa si fa quando si abilita la discovery
     public void btnDiscover(View view) {
 
@@ -201,6 +201,8 @@ public class GestioneBluetooth extends AppCompatActivity
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                 MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
+
+        abilitaDiscoverabilty();
 
         if(mBluetoothAdapter.isDiscovering()){
             mBluetoothAdapter.cancelDiscovery();
@@ -246,23 +248,16 @@ public class GestioneBluetooth extends AppCompatActivity
         Toast.makeText(getApplicationContext(), "Bonded", Toast.LENGTH_SHORT).show();
     }
 
-    public void btnClient(View view) {
-        //controllo di aver selezionato un device dalla lista
-        if (serverDevice != null) {
-            ConnectThread connect = new ConnectThread(serverDevice, MY_UUID);
-            connect.start();
+
+    public void launchMainActivity(View view) {
+        Log.d(TAG, "Avvio main Activity");
+        if(serverDevice == null){
+            Toast.makeText(getApplicationContext(), "Select a Device", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
         }
     }
 
-    public void btnServer(View view) {
-
-        AcceptThread server = new AcceptThread();
-        server.start();
-    }
-
-    public void launchSecondActivity(View view) {
-        Log.d(TAG, "Avvio seconda Activity");
-        Intent intent = new Intent(this, Main2Activity.class);
-        startActivity(intent);
-    }
 }
