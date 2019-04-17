@@ -28,8 +28,12 @@ public class MainActivity extends AppCompatActivity {
 
     private Button a;
 
+    private boolean turno = false;
+
     static final UUID MY_UUID =
             UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
+    AcceptThread server = new AcceptThread();
+    ConnectThread client = new ConnectThread(serverDevice, MY_UUID);
 
 
     static BluetoothAdapter mBluetoothAdapter = GestioneBluetooth.mBluetoothAdapter;
@@ -37,8 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static BluetoothDevice serverDevice = GestioneBluetooth.serverDevice ;
 
-
-    private final BroadcastReceiver mBroadcastReceiver4 = new BroadcastReceiver() {
+    private final BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -47,23 +50,33 @@ public class MainActivity extends AppCompatActivity {
 
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 //Device found
-                Log.d(TAG, "BroadcastReceiver4: Device Found.");
+                Log.d(TAG, "BroadcastReceiver: Device Found.");
             }
             else if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
                 //Device is now connected
-                Log.d(TAG, "BroadcastReceiver4: Device Connected.");
+                Log.d(TAG, "BroadcastReceiver: Device Connected.");
+
+                if(server.isAlive()){
+                    turno = false;
+                } else if(client.isAlive()){
+                    turno = true;
+                }
+
+                //aggiungere funzione per rendere bottoni cliccabili
+
+                Toast.makeText(getApplicationContext(), "Game Start", Toast.LENGTH_SHORT).show();
             }
             else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                 //Done searching
-                Log.d(TAG, "BroadcastReceiver4: Stop Discovery.");
+                Log.d(TAG, "BroadcastReceiver: Stop Discovery.");
             }
             else if (BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED.equals(action)) {
                 //Device is about to disconnect
-                Log.d(TAG, "BroadcastReceiver4: Device Disconnecting.");
+                Log.d(TAG, "BroadcastReceiver: Device Disconnecting.");
             }
             else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
                 //Device has disconnected
-                Log.d(TAG, "BroadcastReceiver4: Device Connecting.");
+                Log.d(TAG, "BroadcastReceiver: Device Connecting.");
             }
         }
     };
@@ -77,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
         filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED);
         filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
-        registerReceiver(mBroadcastReceiver4, filter);
+        registerReceiver(mBroadcastReceiver, filter);
 
         a = (Button) findViewById(R.id.a);
 
@@ -86,29 +99,86 @@ public class MainActivity extends AppCompatActivity {
 
     //metodo per diventare un client
     public void btnClient(View view) {
-        //controllo di aver selezionato un device dalla lista
-        if(serverDevice == null){
-            Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getApplicationContext(), "Trying to connect", Toast.LENGTH_SHORT).show();
-            ConnectThread connect = new ConnectThread(serverDevice, MY_UUID);
-            connect.start();
+        if(client.isAlive()){
+            Log.d(TAG, "Closing Client Socket");
+            client.cancel();
+        }else if(server.isAlive()) {
+            Log.d(TAG, "Closing Server Socket");
+            server.cancel();
         }
+
+        Log.d(TAG, "Starting Client Socket");
+        Toast.makeText(getApplicationContext(), "Trying to connect", Toast.LENGTH_SHORT).show();
+        client.start();
     }
 
     //metodo per diventare un server
     public void btnServer(View view) {
+        if(client.isAlive()) {
+            Log.d(TAG, "Closing Client Socket");
+            client.cancel();
+        }else if(server.isAlive()) {
+            Log.d(TAG, "Closing Server Socket");
+            server.cancel();
+        }
+        Log.d(TAG, "Starting Server Socket");
         Toast.makeText(getApplicationContext(), "Trying to connect", Toast.LENGTH_SHORT).show();
-        AcceptThread server = new AcceptThread();
         server.start();
+
     }
 
     //metodo per mandare un messaggio
-    public void btnSendMessage(View v) {
-        //tante funzioni in base al pulsante cliccato
-        String messaggio = "Ciao";
+    public void btnA(View v) {
+
+        //funzione per bloccare i bottoni
+
+        if(turno == false){
+            Toast.makeText(getApplicationContext(), "Wait your turn", Toast.LENGTH_SHORT).show();
+        }else {
+            turno = false;
+
+            //funzione per salvare bottone cliccato in nell'array dei bottoni non cliccabili
+
+            if(server.isAlive()) {
+                //funzione per mettere il cerchio
+            } else {
+                //funzione per mettere la ics
+            }
+
+            //mettere nell'if la funzione per controllare la vittoria
+            if(victory()) {
+                //mandare messaggio di vittoria
+            } else {
+                //mandare messaggio con info sulla posizione cliccata
+            }
+
+        }
+
+        /*String messaggio = "Ciao";
         byte[] bytes = messaggio.getBytes() ;
-        mConnectedThread.write(bytes);
+        mConnectedThread.write(bytes);*/
+    }
+
+    //funzione per gestire il messaggio ricevuto
+    private void messageReceived(String message) {
+        //prendere il primo carattere e metterlo in un bool
+        //prendere il secondo carattere in un char
+
+        //switch del secondo carattere per salvare il bottone nell'array dei bottoni non cliccabili
+
+        //mettere nell'if il parametro appena salvato nel bool
+        if(true){
+            //gestire la perdita
+        } else{
+            turno = true;
+        }
+    }
+
+    private boolean victory(){
+
+        //funzione per verificare se il giocatore ha vinto
+
+        return true;
     }
 
     //Classe per Gestire il Client
@@ -271,7 +341,9 @@ public class MainActivity extends AppCompatActivity {
                     // Send the obtained bytes to the UI activity.
                     final String incomingMessage = new String(mmBuffer, 0, numBytes);
                     Log.d(TAG, "InputStream: " + incomingMessage);
-                    //dire cosa fare quando si riceve il messaggio
+
+                    messageReceived(incomingMessage);
+
 
                 } catch (IOException e) {
                     Log.d(TAG, "Input stream was disconnected", e);
