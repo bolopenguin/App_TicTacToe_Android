@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,12 +24,18 @@ import java.nio.charset.Charset;
 import java.util.UUID;
 import java.util.logging.Handler;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements  View.OnClickListener{
     final String TAG = "MainActivity";
 
-    private Button a;
+    private Button clientbtn;
+    private Button serverbtn;
 
-    private boolean turno = false;
+    private Button[] btnslots = new Button[8];
+
+    private boolean cliccati[] = new boolean[8];
+    private boolean occupati[] = new boolean[8];
+
 
     static final UUID MY_UUID =
             UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
@@ -56,13 +63,14 @@ public class MainActivity extends AppCompatActivity {
                 //Device is now connected
                 Log.d(TAG, "BroadcastReceiver: Device Connected.");
 
-                if(server.isAlive()){
-                    turno = false;
-                } else if(client.isAlive()){
-                    turno = true;
-                }
+                setButtonsBluetooth(false);
 
-                //aggiungere funzione per rendere bottoni cliccabili
+                if(server.isAlive()){
+                    //scrivere che non è il suo turno
+                } else if(client.isAlive()){
+                    setButtonsSlots(true);
+                    //scrivere che è il suo turno
+                }
 
                 Toast.makeText(getApplicationContext(), "Game Start", Toast.LENGTH_SHORT).show();
             }
@@ -81,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,10 +101,103 @@ public class MainActivity extends AppCompatActivity {
         filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
         registerReceiver(mBroadcastReceiver, filter);
 
-        a = (Button) findViewById(R.id.a);
+        btnslots[0] = findViewById(R.id.a);
+        btnslots[1] = findViewById(R.id.b);
+        btnslots[2] = findViewById(R.id.c);
+        btnslots[3] = findViewById(R.id.d);
+        btnslots[4] = findViewById(R.id.e);
+        btnslots[5] = findViewById(R.id.f);
+        btnslots[6] = findViewById(R.id.g);
+        btnslots[7] = findViewById(R.id.h);
+        btnslots[8] = findViewById(R.id.i);
+        clientbtn = findViewById(R.id.Client);
+        serverbtn = findViewById(R.id.Server);
 
+        clientbtn.setOnClickListener(this);
+        serverbtn.setOnClickListener(this);
+        for(Button listen: btnslots) listen.setOnClickListener(this);
+
+        setButtonsSlots(false);
+        setButtonsBluetooth(true);
     }
 
+    @Override
+    public void onClick(View view){
+
+            switch (view.getId()) {
+
+                case R.id.a:
+                    cliccati[0] = true;
+                    occupati[0] = true;
+                    btnClicked('a');
+                    break;
+
+                case R.id.b:
+                    cliccati[1] = true;
+                    occupati[1] = true;
+                    btnClicked('b');
+                    break;
+
+                case R.id.c:
+                    cliccati[2] = true;
+                    occupati[2] = true;
+                    btnClicked('c');
+                    break;
+
+                case R.id.d:
+                    cliccati[3] = true;
+                    occupati[3] = true;
+                    btnClicked('d');
+                    break;
+
+                case R.id.e:
+                    cliccati[4] = true;
+                    occupati[4] = true;
+                    btnClicked('e');
+                    break;
+
+                case R.id.f:
+                    cliccati[5] = true;
+                    occupati[5] = true;
+                    btnClicked('f');
+                    break;
+
+                case R.id.g:
+                    cliccati[6] = true;
+                    occupati[6] = true;
+                    btnClicked('g');
+                    break;
+
+                case R.id.h:
+                    cliccati[7] = true;
+                    occupati[7] = true;
+                    btnClicked('h');
+                    break;
+
+                case R.id.i:
+                    cliccati[8] = true;
+                    occupati[8] = true;
+                    btnClicked('i');
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+
+    //metodo per rendere i bottoni dello slots cliccabili ( b = true) o non cliccabili ( b = false)
+    private void setButtonsSlots(boolean b) {
+        Log.d(TAG, "Changing btns slots enable to " + b);
+        for(Button change : btnslots) change.setEnabled(b);
+    }
+
+    //metodo per rendere i bottoni del client e server cliccabili ( b=true) o non cliccabili ( b= false)
+    private void setButtonsBluetooth(boolean b) {
+        Log.d(TAG, "Changing btns server & client enable to " + b);
+        clientbtn.setEnabled(b);
+        serverbtn.setEnabled(b);
+    }
 
     //metodo per diventare un client
     public void btnClient(View view) {
@@ -128,35 +230,49 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //metodo per mandare un messaggio
-    public void btnA(View v) {
-
-        //funzione per bloccare i bottoni
-
-        if(turno == false){
-            Toast.makeText(getApplicationContext(), "Wait your turn", Toast.LENGTH_SHORT).show();
-        }else {
-            turno = false;
-
-            //funzione per salvare bottone cliccato in nell'array dei bottoni non cliccabili
+    public void btnClicked(char position) {
+        Log.d(TAG, "Clicked: " + position);
+        //rendo i bottoni non cliccabili
+        int esito = 0;
+        setButtonsSlots(false);
 
             if(server.isAlive()) {
                 //funzione per mettere il cerchio
-            } else {
+            } else if(client.isAlive()) {
                 //funzione per mettere la ics
             }
 
-            //mettere nell'if la funzione per controllare la vittoria
+            //controllo se ci è stata vittora o pareggio
             if(victory()) {
-                //mandare messaggio di vittoria
-            } else {
-                //mandare messaggio con info sulla posizione cliccata
+                esito = 1;
+            } else if(draw()){
+                esito = 2;
             }
+            
+        String messaggio = Integer.toString(esito) + position;
+        byte[] bytes = messaggio.getBytes() ;
+        mConnectedThread.write(bytes);
+    }
 
+    //funzione che verifica se il giocatore ha vinto
+    private boolean victory(){
+        for(int i=0; i<9; i+=3){
+            if(cliccati[i] && cliccati[i+1] && cliccati[i+2]) return true;
+            if(cliccati[i] && cliccati[i+3] && cliccati[i+6]) return true;
         }
 
-        /*String messaggio = "Ciao";
-        byte[] bytes = messaggio.getBytes() ;
-        mConnectedThread.write(bytes);*/
+        if(cliccati[0] && cliccati[4] && cliccati[8]) return true;
+        if(cliccati[2] && cliccati[4] && cliccati[6]) return true;
+
+        return false;
+    }
+    //funzione che verifica se c'è pareggio
+
+    private boolean draw(){
+        for(Boolean clicked : occupati){
+            if(clicked == false)  return false;
+        }
+        return true;
     }
 
     //funzione per gestire il messaggio ricevuto
@@ -170,16 +286,13 @@ public class MainActivity extends AppCompatActivity {
         if(true){
             //gestire la perdita
         } else{
-            turno = true;
+            //attivare i bottoni cliccabili ( non tutti, dipende dal vettore cliccabili)
         }
     }
 
-    private boolean victory(){
 
-        //funzione per verificare se il giocatore ha vinto
 
-        return true;
-    }
+
 
     //Classe per Gestire il Client
     public class ConnectThread extends Thread {
@@ -342,6 +455,7 @@ public class MainActivity extends AppCompatActivity {
                     final String incomingMessage = new String(mmBuffer, 0, numBytes);
                     Log.d(TAG, "InputStream: " + incomingMessage);
 
+                    //funzione per gestire il messaggio ricevuto
                     messageReceived(incomingMessage);
 
 
