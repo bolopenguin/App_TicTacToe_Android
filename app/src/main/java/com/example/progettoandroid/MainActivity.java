@@ -129,55 +129,55 @@ public class MainActivity extends AppCompatActivity
                 case R.id.a:
                     cliccati[0] = true;
                     occupati[0] = true;
-                    btnClicked('a');
+                    btnClicked(0);
                     break;
 
                 case R.id.b:
                     cliccati[1] = true;
                     occupati[1] = true;
-                    btnClicked('b');
+                    btnClicked(1);
                     break;
 
                 case R.id.c:
                     cliccati[2] = true;
                     occupati[2] = true;
-                    btnClicked('c');
+                    btnClicked(2);
                     break;
 
                 case R.id.d:
                     cliccati[3] = true;
                     occupati[3] = true;
-                    btnClicked('d');
+                    btnClicked(3);
                     break;
 
                 case R.id.e:
                     cliccati[4] = true;
                     occupati[4] = true;
-                    btnClicked('e');
+                    btnClicked(4);
                     break;
 
                 case R.id.f:
                     cliccati[5] = true;
                     occupati[5] = true;
-                    btnClicked('f');
+                    btnClicked(5);
                     break;
 
                 case R.id.g:
                     cliccati[6] = true;
                     occupati[6] = true;
-                    btnClicked('g');
+                    btnClicked(6);
                     break;
 
                 case R.id.h:
                     cliccati[7] = true;
                     occupati[7] = true;
-                    btnClicked('h');
+                    btnClicked(7);
                     break;
 
                 case R.id.i:
                     cliccati[8] = true;
                     occupati[8] = true;
-                    btnClicked('i');
+                    btnClicked(8);
                     break;
 
                 default:
@@ -230,7 +230,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     //metodo per mandare un messaggio
-    public void btnClicked(char position) {
+    public void btnClicked(int position) {
         Log.d(TAG, "Clicked: " + position);
         //rendo i bottoni non cliccabili
         int esito = 0;
@@ -248,13 +248,13 @@ public class MainActivity extends AppCompatActivity
             } else if(draw()){
                 esito = 2;
             }
-            
-        String messaggio = Integer.toString(esito) + position;
+
+        String messaggio = Integer.toString(esito) + Integer.toString(position);
         byte[] bytes = messaggio.getBytes() ;
         mConnectedThread.write(bytes);
     }
 
-    //funzione che verifica se il giocatore ha vinto
+    //funzione che verifica se il giocatore ha vinto (da rivedere)
     private boolean victory(){
         for(int i=0; i<9; i+=3){
             if(cliccati[i] && cliccati[i+1] && cliccati[i+2]) return true;
@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity
 
     private boolean draw(){
         for(Boolean clicked : occupati){
-            if(clicked == false)  return false;
+            if(!clicked)  return false;
         }
         return true;
     }
@@ -278,18 +278,34 @@ public class MainActivity extends AppCompatActivity
     //funzione per gestire il messaggio ricevuto
     private void messageReceived(String message) {
         //prendere il primo carattere e metterlo in un bool
+        int esito = Character.getNumericValue(message.charAt(0));
         //prendere il secondo carattere in un char
+        int position = Character.getNumericValue(message.charAt(1));
 
-        //switch del secondo carattere per salvare il bottone nell'array dei bottoni non cliccabili
+        occupati[position] = true;
 
-        //mettere nell'if il parametro appena salvato nel bool
-        if(true){
-            //gestire la perdita
-        } else{
-            //attivare i bottoni cliccabili ( non tutti, dipende dal vettore cliccabili)
+        //controllo l'esito
+        switch (esito){
+            case 0:
+                for(int i=0; i<occupati.length; i++){
+                    if(!cliccati[i] || !occupati[i]) btnslots[i].setEnabled(true);
+                    // change.setEnabled(!cliccati[i] || !occupati[i]);
+                }
+                break;
+
+            case 1:
+                //gestire pareggio
+                break;
+
+            case 2:
+                //gestire perdita
+                break;
+
+            default:
+                break;
         }
-    }
 
+    }
 
 
 
