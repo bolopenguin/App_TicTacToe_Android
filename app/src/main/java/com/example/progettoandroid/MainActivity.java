@@ -301,6 +301,13 @@ public class MainActivity extends AppCompatActivity
 
         occupati[position] = true;
 
+        if(!ruolo) {
+            btnslots[position].setText("X");
+        } else {
+            btnslots[position].setText("O");
+        }
+
+
         //controllo l'esito
         switch (esito){
             case 0:
