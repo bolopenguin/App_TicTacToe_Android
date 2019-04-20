@@ -133,55 +133,46 @@ public class MainActivity extends AppCompatActivity
 
                 case R.id.a:
                     cliccati[0] = true;
-                    occupati[0] = true;
                     btnClicked(0);
                     break;
 
                 case R.id.b:
                     cliccati[1] = true;
-                    occupati[1] = true;
                     btnClicked(1);
                     break;
 
                 case R.id.c:
                     cliccati[2] = true;
-                    occupati[2] = true;
                     btnClicked(2);
                     break;
 
                 case R.id.d:
                     cliccati[3] = true;
-                    occupati[3] = true;
                     btnClicked(3);
                     break;
 
                 case R.id.e:
                     cliccati[4] = true;
-                    occupati[4] = true;
                     btnClicked(4);
                     break;
 
                 case R.id.f:
                     cliccati[5] = true;
-                    occupati[5] = true;
                     btnClicked(5);
                     break;
 
                 case R.id.g:
                     cliccati[6] = true;
-                    occupati[6] = true;
                     btnClicked(6);
                     break;
 
                 case R.id.h:
                     cliccati[7] = true;
-                    occupati[7] = true;
                     btnClicked(7);
                     break;
 
                 case R.id.i:
                     cliccati[8] = true;
-                    occupati[8] = true;
                     btnClicked(8);
                     break;
 
@@ -261,11 +252,11 @@ public class MainActivity extends AppCompatActivity
             }
 
             //controllo se ci è stata vittora o pareggio
-            /*if(victory()) {
+            if(victory()) {
                 esito = 1;
             } else if(draw()){
                 esito = 2;
-            }*/
+            }
 
         String messaggio = Integer.toString(esito) + Integer.toString(position);
         byte[] bytes = messaggio.getBytes() ;
@@ -274,21 +265,22 @@ public class MainActivity extends AppCompatActivity
 
     //funzione che verifica se il giocatore ha vinto (da rivedere)
     private boolean victory(){
-        for(int i=0; i<9; i+=3){
-            if(cliccati[i] && cliccati[i+1] && cliccati[i+2]) return true;
-            if(cliccati[i] && cliccati[i+3] && cliccati[i+6]) return true;
-        }
-
-        if(cliccati[0] && cliccati[4] && cliccati[8]) return true;
-        if(cliccati[2] && cliccati[4] && cliccati[6]) return true;
+        if(cliccati[0] && cliccati [1] && cliccati[2]) return true;
+        if(cliccati[3] && cliccati [4] && cliccati[5]) return true;
+        if(cliccati[6] && cliccati [7] && cliccati[8]) return true;
+        if(cliccati[0] && cliccati [3] && cliccati[6]) return true;
+        if(cliccati[1] && cliccati [4] && cliccati[7]) return true;
+        if(cliccati[2] && cliccati [5] && cliccati[8]) return true;
+        if(cliccati[0] && cliccati [4] && cliccati[8]) return true;
+        if(cliccati[2] && cliccati [4] && cliccati[6]) return true;
 
         return false;
     }
     //funzione che verifica se c'è pareggio
 
     private boolean draw(){
-        for(Boolean clicked : occupati){
-            if(!clicked)  return false;
+        for(int i=0; i<9; i++){
+            if(!cliccati[i] & !occupati[i]) return false;
         }
         return true;
     }
