@@ -132,6 +132,8 @@ public class MainActivity extends AppCompatActivity
         clientbtn.setOnClickListener(this);
         serverbtn.setOnClickListener(this);
         for(Button listen: btnslots) listen.setOnClickListener(this);
+        revengebtn.setOnClickListener(this);
+        
         revengebtn.setEnabled(false);
         setButtonsSlots(false);
     }
