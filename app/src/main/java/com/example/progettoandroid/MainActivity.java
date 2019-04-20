@@ -3,6 +3,7 @@
 
 package com.example.progettoandroid;
 
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
@@ -18,6 +19,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -33,8 +36,11 @@ public class MainActivity extends AppCompatActivity
 
     private Button clientbtn;
     private Button serverbtn;
+    private Button revengebtn;
 
     private Button[] btnslots = new Button[9];
+
+    private TextView info;
 
     private boolean cliccati[] = new boolean[9];
     private boolean occupati[] = new boolean[9];
@@ -55,6 +61,7 @@ public class MainActivity extends AppCompatActivity
 
     private final BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
 
+        @SuppressLint("SetTextI18n")
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
@@ -72,9 +79,9 @@ public class MainActivity extends AppCompatActivity
 
                 if(ruolo){
                     setButtonsSlots(true);
-                    //scrivere che è il suo turno
+                    info.setText("Tocca a te");
                 } else{
-                    //scrivere che non è il suo turno
+                    info.setText("Aspetta");
                 }
 
                 Toast.makeText(getApplicationContext(), "Game Start", Toast.LENGTH_SHORT).show();
@@ -118,11 +125,14 @@ public class MainActivity extends AppCompatActivity
 
         clientbtn = (Button)findViewById(R.id.Client);
         serverbtn = (Button)findViewById(R.id.Server);
+        revengebtn = (Button)findViewById(R.id.revenge);
+
+        info = (TextView)findViewById(R.id.textView);
 
         clientbtn.setOnClickListener(this);
         serverbtn.setOnClickListener(this);
         for(Button listen: btnslots) listen.setOnClickListener(this);
-
+        revengebtn.setEnabled(false);
         setButtonsSlots(false);
     }
 
@@ -184,11 +194,14 @@ public class MainActivity extends AppCompatActivity
                     btnServer();
                     break;
 
+                case R.id.revenge:
+                    reset();
+                    break;
+
                 default:
                     break;
             }
         }
-
 
     //metodo per rendere i bottoni dello slots cliccabili ( b = true) o non cliccabili ( b = false)
     private void setButtonsSlots(boolean b) {
@@ -238,12 +251,15 @@ public class MainActivity extends AppCompatActivity
     }
 
     //metodo per mandare un messaggio
+    @SuppressLint("SetTextI18n")
     public void btnClicked(int position) {
         Log.d(TAG, "Clicked: " + position);
 
         //rendo i bottoni non cliccabili
         int esito = 0;
         setButtonsSlots(false);
+
+        info.setText("Aspetta");
 
             if(ruolo) {
                 btnslots[position].setText("X");
@@ -253,8 +269,14 @@ public class MainActivity extends AppCompatActivity
 
             //controllo se ci è stata vittora o pareggio
             if(victory()) {
+                setButtonsSlots(false);
+                info.setText("Hai Vinto");
+                revengebtn.setEnabled(true);
                 esito = 1;
             } else if(draw()){
+                setButtonsSlots(false);
+                info.setText("Pareggio");
+                revengebtn.setEnabled(true);
                 esito = 2;
             }
 
@@ -286,6 +308,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     //funzione per gestire il messaggio ricevuto
+    @SuppressLint("SetTextI18n")
     private void messageReceived(String message) {
         //prendere il primo carattere e metterlo in un bool
         int esito = Character.getNumericValue(message.charAt(0));
@@ -293,6 +316,8 @@ public class MainActivity extends AppCompatActivity
         //prendere il secondo carattere in un char
         int position = Character.getNumericValue(message.charAt(1));
         Log.d(TAG, "Position: " + position);
+
+        info.setText("Tocca a te");
 
         occupati[position] = true;
 
@@ -309,16 +334,19 @@ public class MainActivity extends AppCompatActivity
                 for(int i=0; i<9; i++){
                     if(cliccati[i] | occupati[i]) btnslots[i].setEnabled(false);
                     else btnslots[i].setEnabled(true);
-                    // change.setEnabled(!cliccati[i] || !occupati[i]);
                 }
                 break;
 
             case 1:
-                //gestire pareggio
+                setButtonsSlots(false);
+                info.setText("Hai Perso");
+                revengebtn.setEnabled(true);
                 break;
 
             case 2:
-                //gestire perdita
+                setButtonsSlots(false);
+                info.setText("Pareggio");
+                revengebtn.setEnabled(true);
                 break;
 
             default:
@@ -327,6 +355,16 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    private void reset() {
+        if(ruolo){
+            client.cancel();
+        }   else{
+            server.cancel();
+        }
+
+        setButtonsBluetooth(true);
+        revengebtn.setEnabled(false);
+    }
 
 
 
