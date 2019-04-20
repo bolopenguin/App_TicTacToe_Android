@@ -11,22 +11,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:onClick="btnClient"
+        android:layout_marginTop="8dp"
         android:text="Client"
         app:layout_constraintBottom_toBottomOf="@+id/Server"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/Server" />
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/Server"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="136dp"
-        android:onClick="btnServer"
+        android:layout_marginBottom="88dp"
         android:text="Server"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/Client" />
 
     <TableLayout
         android:id="@+id/tableLayout"
@@ -34,13 +37,19 @@
         android:layout_height="380dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="44dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:background="#ffd4d4d4"
         android:gravity="center"
         android:padding="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/Server"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintHorizontal_bias="0.533"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.055">
 
         <TableRow
             android:layout_width="wrap_content"
@@ -52,21 +61,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="0"
-                android:text="A" />
+                android:text="Free" />
 
             <Button
                 android:id="@+id/b"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="1"
-                android:text="B" />
+                android:text="Free" />
 
             <Button
                 android:id="@+id/c"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="2"
-                android:text="C" />
+                android:text="Free" />
 
         </TableRow>
 
@@ -80,21 +89,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="0"
-                android:text="D" />
+                android:text="Free" />
 
             <Button
                 android:id="@+id/e"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="1"
-                android:text="E" />
+                android:text="Free" />
 
             <Button
                 android:id="@+id/f"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="2"
-                android:text="F" />
+                android:text="Free" />
         </TableRow>
 
         <TableRow
@@ -107,21 +116,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="0"
-                android:text="G" />
+                android:text="Free" />
 
             <Button
                 android:id="@+id/h"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="1"
-                android:text="H" />
+                android:text="Free" />
 
             <Button
                 android:id="@+id/i"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="2"
-                android:text="I" />
+                android:text="Free" />
         </TableRow>
 
     </TableLayout>

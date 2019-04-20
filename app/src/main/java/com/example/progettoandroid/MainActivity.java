@@ -1,3 +1,6 @@
+
+//mettere timer fra la connessione e i bottoni cliccabili
+
 package com.example.progettoandroid;
 
 import android.bluetooth.BluetoothAdapter;
@@ -31,11 +34,13 @@ public class MainActivity extends AppCompatActivity
     private Button clientbtn;
     private Button serverbtn;
 
-    private Button[] btnslots = new Button[8];
+    private Button[] btnslots = new Button[9];
 
-    private boolean cliccati[] = new boolean[8];
-    private boolean occupati[] = new boolean[8];
+    private boolean cliccati[] = new boolean[9];
+    private boolean occupati[] = new boolean[9];
 
+    // se vale 0 è il server se vale 1 è il client
+    private boolean ruolo;
 
     static final UUID MY_UUID =
             UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
@@ -65,11 +70,11 @@ public class MainActivity extends AppCompatActivity
 
                 setButtonsBluetooth(false);
 
-                if(server.isAlive()){
-                    //scrivere che non è il suo turno
-                } else if(client.isAlive()){
+                if(ruolo){
                     setButtonsSlots(true);
                     //scrivere che è il suo turno
+                } else{
+                    //scrivere che non è il suo turno
                 }
 
                 Toast.makeText(getApplicationContext(), "Game Start", Toast.LENGTH_SHORT).show();
@@ -101,24 +106,24 @@ public class MainActivity extends AppCompatActivity
         filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
         registerReceiver(mBroadcastReceiver, filter);
 
-        btnslots[0] = findViewById(R.id.a);
-        btnslots[1] = findViewById(R.id.b);
-        btnslots[2] = findViewById(R.id.c);
-        btnslots[3] = findViewById(R.id.d);
-        btnslots[4] = findViewById(R.id.e);
-        btnslots[5] = findViewById(R.id.f);
-        btnslots[6] = findViewById(R.id.g);
-        btnslots[7] = findViewById(R.id.h);
-        btnslots[8] = findViewById(R.id.i);
-        clientbtn = findViewById(R.id.Client);
-        serverbtn = findViewById(R.id.Server);
+        btnslots[0] = (Button)findViewById(R.id.a);
+        btnslots[1] = (Button)findViewById(R.id.b);
+        btnslots[2] = (Button)findViewById(R.id.c);
+        btnslots[3] = (Button)findViewById(R.id.d);
+        btnslots[4] = (Button)findViewById(R.id.e);
+        btnslots[5] = (Button)findViewById(R.id.f);
+        btnslots[6] = (Button)findViewById(R.id.g);
+        btnslots[7] = (Button)findViewById(R.id.h);
+        btnslots[8] = (Button)findViewById(R.id.i);
+
+        clientbtn = (Button)findViewById(R.id.Client);
+        serverbtn = (Button)findViewById(R.id.Server);
 
         clientbtn.setOnClickListener(this);
         serverbtn.setOnClickListener(this);
         for(Button listen: btnslots) listen.setOnClickListener(this);
 
         setButtonsSlots(false);
-        setButtonsBluetooth(true);
     }
 
     @Override
@@ -180,6 +185,14 @@ public class MainActivity extends AppCompatActivity
                     btnClicked(8);
                     break;
 
+                case R.id.Client:
+                    btnClient();
+                    break;
+
+                case R.id.Server:
+                    btnServer();
+                    break;
+
                 default:
                     break;
             }
@@ -200,29 +213,33 @@ public class MainActivity extends AppCompatActivity
     }
 
     //metodo per diventare un client
-    public void btnClient(View view) {
-        if(client.isAlive()){
-            Log.d(TAG, "Closing Client Socket");
-            client.cancel();
-        }else if(server.isAlive()) {
+    public void btnClient() {
+
+        if(!ruolo) {
             Log.d(TAG, "Closing Server Socket");
             server.cancel();
+        } else {
+            Log.d(TAG, "Closing Client Socket");
+            client.cancel();
         }
 
+        ruolo = true;
         Log.d(TAG, "Starting Client Socket");
         Toast.makeText(getApplicationContext(), "Trying to connect", Toast.LENGTH_SHORT).show();
         client.start();
     }
 
     //metodo per diventare un server
-    public void btnServer(View view) {
-        if(client.isAlive()) {
-            Log.d(TAG, "Closing Client Socket");
-            client.cancel();
-        }else if(server.isAlive()) {
+    public void btnServer() {
+        if(!ruolo) {
             Log.d(TAG, "Closing Server Socket");
             server.cancel();
+        } else {
+            Log.d(TAG, "Closing Client Socket");
+            client.cancel();
         }
+
+        ruolo = false;
         Log.d(TAG, "Starting Server Socket");
         Toast.makeText(getApplicationContext(), "Trying to connect", Toast.LENGTH_SHORT).show();
         server.start();
@@ -236,10 +253,10 @@ public class MainActivity extends AppCompatActivity
         int esito = 0;
         setButtonsSlots(false);
 
-            if(server.isAlive()) {
-                //funzione per mettere il cerchio
-            } else if(client.isAlive()) {
-                //funzione per mettere la ics
+            if(ruolo) {
+                btnslots[position].setText("X");
+            } else {
+                btnslots[position].setText("O");
             }
 
             //controllo se ci è stata vittora o pareggio
