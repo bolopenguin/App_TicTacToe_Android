@@ -249,6 +249,7 @@ public class MainActivity extends AppCompatActivity
     //metodo per mandare un messaggio
     public void btnClicked(int position) {
         Log.d(TAG, "Clicked: " + position);
+
         //rendo i bottoni non cliccabili
         int esito = 0;
         setButtonsSlots(false);
@@ -260,11 +261,11 @@ public class MainActivity extends AppCompatActivity
             }
 
             //controllo se ci è stata vittora o pareggio
-            if(victory()) {
+            /*if(victory()) {
                 esito = 1;
             } else if(draw()){
                 esito = 2;
-            }
+            }*/
 
         String messaggio = Integer.toString(esito) + Integer.toString(position);
         byte[] bytes = messaggio.getBytes() ;
@@ -313,8 +314,9 @@ public class MainActivity extends AppCompatActivity
         //controllo l'esito
         switch (esito){
             case 0:
-                for(int i=0; i<occupati.length; i++){
-                    if(!cliccati[i] || !occupati[i]) btnslots[i].setEnabled(true);
+                for(int i=0; i<9; i++){
+                    if(cliccati[i] | occupati[i]) btnslots[i].setEnabled(false);
+                    else btnslots[i].setEnabled(true);
                     // change.setEnabled(!cliccati[i] || !occupati[i]);
                 }
                 break;
