@@ -215,13 +215,13 @@ public class MainActivity extends AppCompatActivity
     //metodo per diventare un client
     public void btnClient() {
 
-        if(!ruolo) {
+        /*if(!ruolo) {
             Log.d(TAG, "Closing Server Socket");
             server.cancel();
         } else {
             Log.d(TAG, "Closing Client Socket");
             client.cancel();
-        }
+        }*/
 
         ruolo = true;
         Log.d(TAG, "Starting Client Socket");
@@ -231,13 +231,13 @@ public class MainActivity extends AppCompatActivity
 
     //metodo per diventare un server
     public void btnServer() {
-        if(!ruolo) {
+        /*if(!ruolo) {
             Log.d(TAG, "Closing Server Socket");
             server.cancel();
         } else {
             Log.d(TAG, "Closing Client Socket");
             client.cancel();
-        }
+        }*/
 
         ruolo = false;
         Log.d(TAG, "Starting Server Socket");
@@ -296,8 +296,10 @@ public class MainActivity extends AppCompatActivity
     private void messageReceived(String message) {
         //prendere il primo carattere e metterlo in un bool
         int esito = Character.getNumericValue(message.charAt(0));
+        Log.d(TAG, "Esito: " + esito);
         //prendere il secondo carattere in un char
         int position = Character.getNumericValue(message.charAt(1));
+        Log.d(TAG, "Position: " + position);
 
         occupati[position] = true;
 
@@ -495,9 +497,15 @@ public class MainActivity extends AppCompatActivity
                     final String incomingMessage = new String(mmBuffer, 0, numBytes);
                     Log.d(TAG, "InputStream: " + incomingMessage);
 
-                    //funzione per gestire il messaggio ricevuto
-                    messageReceived(incomingMessage);
+                    runOnUiThread(new Runnable() {
 
+                        @Override
+                        public void run() {
+                            //funzione per gestire il messaggio ricevuto
+                            messageReceived(incomingMessage);
+
+                        }
+                    });
 
                 } catch (IOException e) {
                     Log.d(TAG, "Input stream was disconnected", e);
