@@ -1,6 +1,3 @@
-
-//mettere timer fra la connessione e i bottoni cliccabili
-
 package com.example.progettoandroid;
 
 import android.annotation.SuppressLint;
@@ -97,10 +94,30 @@ public class MainActivity extends AppCompatActivity
             else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
                 //Device has disconnected
                 Log.d(TAG, "BroadcastReceiver: Device Connecting.");
+                setButtonsBluetooth(true);
             }
         }
     };
 
+    @Override
+    protected void onDestroy() {
+        Log.d(TAG, "onDestroy: called.");
+        super.onDestroy();
+        unregisterReceiver(mBroadcastReceiver);
+
+        if(mConnectedThread != null){
+            mConnectedThread.cancel();
+            mConnectedThread = null;
+        }
+        if(client != null) {
+            client.cancel();
+            client = null;
+        }
+        if( server != null){
+            server.cancel();
+            server = null;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +150,7 @@ public class MainActivity extends AppCompatActivity
         serverbtn.setOnClickListener(this);
         for(Button listen: btnslots) listen.setOnClickListener(this);
         revengebtn.setOnClickListener(this);
-        
+
         revengebtn.setEnabled(false);
         setButtonsSlots(false);
     }
@@ -221,33 +238,38 @@ public class MainActivity extends AppCompatActivity
     //metodo per diventare un client
     public void btnClient() {
 
-        /*if(!ruolo) {
-            Log.d(TAG, "Closing Server Socket");
-            server.cancel();
-        } else {
-            Log.d(TAG, "Closing Client Socket");
+        if(client != null) {
             client.cancel();
-        }*/
+            client = null;
+        }
+        if( server != null){
+            server.cancel();
+            server = null;
+        }
 
         ruolo = true;
         Log.d(TAG, "Starting Client Socket");
         Toast.makeText(getApplicationContext(), "Trying to connect", Toast.LENGTH_SHORT).show();
+        client = new ConnectThread(serverDevice, MY_UUID);
         client.start();
     }
 
     //metodo per diventare un server
     public void btnServer() {
-        /*if(!ruolo) {
-            Log.d(TAG, "Closing Server Socket");
-            server.cancel();
-        } else {
-            Log.d(TAG, "Closing Client Socket");
+
+        if(client != null) {
             client.cancel();
-        }*/
+            client = null;
+        }
+        if( server != null){
+            server.cancel();
+            server = null;
+        }
 
         ruolo = false;
         Log.d(TAG, "Starting Server Socket");
         Toast.makeText(getApplicationContext(), "Trying to connect", Toast.LENGTH_SHORT).show();
+        server = new AcceptThread();
         server.start();
 
     }
@@ -357,18 +379,31 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void reset() {
-        if(ruolo){
+    private void reset(){
+        info.setText("");
+
+        revengebtn.setEnabled(false);
+
+        if(mConnectedThread != null){
+            mConnectedThread.cancel();
+            mConnectedThread = null;
+        }
+        if(client != null) {
             client.cancel();
-        }   else{
+            client = null;
+        }
+        if( server != null){
             server.cancel();
+            server = null;
         }
 
-        setButtonsBluetooth(true);
-        revengebtn.setEnabled(false);
+        for(int i=0; i<9; i++){
+            btnslots[i].setText("Free");
+            cliccati[i] = false;
+            occupati[i] = false;
+        }
+
     }
-
-
 
     //Classe per Gestire il Client
     public class ConnectThread extends Thread {
@@ -419,12 +454,12 @@ public class MainActivity extends AppCompatActivity
             // The connection attempt succeeded. Perform work associated with
             // the connection in a separate thread.
             connected(mmSocket);
-
         }
 
         // Closes the client socket and causes the thread to finish.
         public void cancel() {
             try {
+                Log.d(TAG, "Closing client socket");
                 mmSocket.close();
             } catch (IOException e) {
                 Log.e(TAG, "Could not close the client socket", e);
@@ -479,6 +514,7 @@ public class MainActivity extends AppCompatActivity
         // Closes the connect socket and causes the thread to finish.
         public void cancel() {
             try {
+                Log.d(TAG, "Closing server socket");
                 mmServerSocket.close();
             } catch (IOException e) {
                 Log.e(TAG, "Could not close the connect socket", e);
@@ -562,6 +598,7 @@ public class MainActivity extends AppCompatActivity
         // Call this method from the main activity to shut down the connection.
         public void cancel() {
             try {
+                Log.d(TAG, "Closing mConncectThread socket");
                 mmSocket.close();
             } catch (IOException e) {
                 Log.e(TAG, "Could not close the connect socket", e);
