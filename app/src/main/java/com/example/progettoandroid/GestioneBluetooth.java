@@ -13,7 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -28,13 +28,13 @@ public class GestioneBluetooth extends AppCompatActivity
     public DeviceListAdapter mDeviceListAdapter;
     public ArrayList<BluetoothDevice> mBTDevices = new ArrayList<>();
 
+
     static BluetoothAdapter mBluetoothAdapter;
-    BluetoothDevice mBTDevice;
 
     public static BluetoothDevice serverDevice;
 
     //Broadcast Receiver for listing devices that are not yet paired
-    private BroadcastReceiver mBroadcastReceiver1 = new BroadcastReceiver() {
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
@@ -58,41 +58,12 @@ public class GestioneBluetooth extends AppCompatActivity
         }
     };
 
-    //Broadcast Receiver that detects bond state changes (Pairing status changes)
-    private final BroadcastReceiver mBroadcastReceiver2 = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            final String action = intent.getAction();
-
-            if(action.equals(BluetoothDevice.ACTION_BOND_STATE_CHANGED)){
-                BluetoothDevice mDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                //3 cases:
-                //case1: bonded already
-                if (mDevice.getBondState() == BluetoothDevice.BOND_BONDED){
-                    Log.d(TAG, "BroadcastReceiver2: BOND_BONDED.");
-                    //inside BroadcastReceiver4
-                    Toast.makeText(getApplicationContext(), "Bonded", Toast.LENGTH_SHORT).show();
-                    mBTDevice = mDevice;
-                }
-                //case2: creating a bond
-                if (mDevice.getBondState() == BluetoothDevice.BOND_BONDING) {
-                    Log.d(TAG, "BroadcastReceiver2: BOND_BONDING.");
-                }
-                //case3: breaking a bond
-                if (mDevice.getBondState() == BluetoothDevice.BOND_NONE) {
-                    Log.d(TAG, "BroadcastReceiver2: BOND_NONE.");
-                }
-            }
-        }
-    };
-
 
     @Override
     protected void onDestroy() {
         Log.d(TAG, "onDestroy: called.");
         super.onDestroy();
-        unregisterReceiver(mBroadcastReceiver1);
-        unregisterReceiver(mBroadcastReceiver2);
+        unregisterReceiver(mBroadcastReceiver);
     }
 
     @Override
@@ -106,10 +77,6 @@ public class GestioneBluetooth extends AppCompatActivity
         mBTDevices = new ArrayList<>();
         lvNewDevices = (ListView) findViewById(R.id.lvNewDevices);
         lvNewDevices.setOnItemClickListener(GestioneBluetooth.this);
-
-        //Broadcasts when bond state changes pairing and connecting
-        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
-        registerReceiver(mBroadcastReceiver2, filter);
 
     }
 
@@ -139,14 +106,14 @@ public class GestioneBluetooth extends AppCompatActivity
             Log.d(TAG, "btnDiscover: Looking for unpaired devices.");
 
             IntentFilter discoverDevicesIntent = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-            registerReceiver(mBroadcastReceiver1, discoverDevicesIntent);
+            registerReceiver(mBroadcastReceiver, discoverDevicesIntent);
         }
         if(!mBluetoothAdapter.isDiscovering()){
             mBluetoothAdapter.startDiscovery();
             Log.d(TAG, "btnDiscover: Looking for unpaired devices.");
 
             IntentFilter discoverDevicesIntent = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-            registerReceiver(mBroadcastReceiver1, discoverDevicesIntent);
+            registerReceiver(mBroadcastReceiver, discoverDevicesIntent);
         }
 
 
@@ -178,10 +145,11 @@ public class GestioneBluetooth extends AppCompatActivity
         //cerca di fare il bond
         Log.d(TAG, "Trying to pair with " + deviceName);
         mBTDevices.get(i).createBond();
+        Log.d(TAG, "Paired with " + deviceName);
 
         serverDevice = mBTDevices.get(i);
-
         Toast.makeText(getApplicationContext(), "Bonded", Toast.LENGTH_SHORT).show();
+
     }
 
 
@@ -195,5 +163,6 @@ public class GestioneBluetooth extends AppCompatActivity
             startActivity(intent);
         }
     }
+
 
 }

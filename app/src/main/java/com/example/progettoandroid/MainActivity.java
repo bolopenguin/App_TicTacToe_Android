@@ -249,7 +249,6 @@ public class MainActivity extends AppCompatActivity
 
         ruolo = true;
         Log.d(TAG, "Starting Client Socket");
-        Toast.makeText(getApplicationContext(), "Trying to connect", Toast.LENGTH_SHORT).show();
         client = new ConnectThread(serverDevice, MY_UUID);
         client.start();
     }
@@ -268,7 +267,6 @@ public class MainActivity extends AppCompatActivity
 
         ruolo = false;
         Log.d(TAG, "Starting Server Socket");
-        Toast.makeText(getApplicationContext(), "Trying to connect", Toast.LENGTH_SHORT).show();
         server = new AcceptThread();
         server.start();
 
