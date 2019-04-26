@@ -12,16 +12,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,6 +27,8 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.UUID;
 import java.util.logging.Handler;
+
+
 
 public class MainActivity extends AppCompatActivity
         implements  View.OnClickListener{
@@ -41,6 +41,10 @@ public class MainActivity extends AppCompatActivity
     private Button[] btnslots = new Button[9];
 
     private TextView info;
+
+    private VideoView HaiVinto;
+    private VideoView HaiPerso;
+    private VideoView HaiPareggiato;
 
     private boolean cliccati[] = new boolean[9];
     private boolean occupati[] = new boolean[9];
@@ -128,6 +132,18 @@ public class MainActivity extends AppCompatActivity
         revengebtn = (Button)findViewById(R.id.revenge);
 
         info = (TextView)findViewById(R.id.textView);
+
+        HaiVinto = (VideoView)findViewById(R.id.videoView1);
+        HaiVinto.setVideoPath("android.resource://com.example.progettoandroid/"+R.raw.haivinto);
+        HaiVinto.setVisibility(View.INVISIBLE);
+
+        HaiPerso = (VideoView)findViewById(R.id.videoView2);
+        HaiPerso.setVideoPath("android.resource://com.example.progettoandroid/"+R.raw.haiperso);
+        HaiPerso.setVisibility(View.INVISIBLE);
+
+        HaiPareggiato = (VideoView)findViewById(R.id.videoView3);
+        HaiPareggiato.setVideoPath("android.resource://com.example.progettoandroid/"+R.raw.haipareggiato);
+        HaiPareggiato.setVisibility(View.INVISIBLE);
 
         clientbtn.setOnClickListener(this);
         serverbtn.setOnClickListener(this);
@@ -275,11 +291,15 @@ public class MainActivity extends AppCompatActivity
                 info.setText("Hai Vinto");
                 revengebtn.setEnabled(true);
                 esito = 1;
+                HaiVinto.setVisibility(View.VISIBLE);
+                HaiVinto.start();
             } else if(draw()){
                 setButtonsSlots(false);
                 info.setText("Pareggio");
                 revengebtn.setEnabled(true);
                 esito = 2;
+                HaiPareggiato.setVisibility(View.VISIBLE);
+                HaiPareggiato.start();
             }
 
         String messaggio = Integer.toString(esito) + Integer.toString(position);
@@ -343,12 +363,16 @@ public class MainActivity extends AppCompatActivity
                 setButtonsSlots(false);
                 info.setText("Hai Perso");
                 revengebtn.setEnabled(true);
+                HaiPerso.setVisibility(View.VISIBLE);
+                HaiPerso.start();
                 break;
 
             case 2:
                 setButtonsSlots(false);
                 info.setText("Pareggio");
                 revengebtn.setEnabled(true);
+                HaiPareggiato.setVisibility(View.VISIBLE);
+                HaiPareggiato.start();
                 break;
 
             default:
@@ -358,14 +382,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void reset() {
-        if(ruolo){
-            client.cancel();
-        }   else{
-            server.cancel();
-        }
-
-        setButtonsBluetooth(true);
-        revengebtn.setEnabled(false);
+        finish();
+        startActivity(getIntent());
     }
 
 

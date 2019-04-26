@@ -4,34 +4,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     tools:context=".MainActivity">
 
     <Button
         android:id="@+id/Client"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="89dp"
+        android:layout_height="52dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="36dp"
+        android:background="@drawable/button"
         android:text="Client"
-        app:layout_constraintBottom_toBottomOf="@+id/Server"
-        app:layout_constraintEnd_toStartOf="@+id/textView"
+        android:textAlignment="center"
+        android:textColor="#ff0000"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/revenge"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tableLayout"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="@+id/Server" />
 
     <Button
         android:id="@+id/Server"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="93dp"
+        android:layout_height="47dp"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="88dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="28dp"
+        android:background="@drawable/button"
         android:text="Server"
+        android:textColor="#ff0000"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/Client" />
+        app:layout_constraintHorizontal_bias="0.836"
+        app:layout_constraintStart_toEndOf="@+id/revenge" />
 
     <TableLayout
         android:id="@+id/tableLayout"
@@ -43,7 +52,7 @@
         android:layout_marginTop="44dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:background="#ffd4d4d4"
+        android:background="@android:color/transparent"
         android:gravity="center"
         android:padding="5dp"
         app:layout_constraintBottom_toTopOf="@+id/Server"
@@ -63,21 +72,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="0"
-                android:text="Free" />
+                android:text="Free"
+                android:textColor="#fafafa"
+                android:textStyle="bold"
+                android:background="#0000"/>
 
             <Button
                 android:id="@+id/b"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="1"
-                android:text="Free" />
+                android:text="Free"
+                android:textColor="#fafafa"
+                android:textStyle="bold"
+                android:background="#0000"/>
 
             <Button
                 android:id="@+id/c"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="2"
-                android:text="Free" />
+                android:text="Free"
+                android:textColor="#fafafa"
+                android:textStyle="bold"
+                android:background="#0000"/>
 
         </TableRow>
 
@@ -91,21 +109,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="0"
-                android:text="Free" />
+                android:text="Free"
+                android:textColor="#fafafa"
+                android:textStyle="bold"
+                android:background="#0000"/>
 
             <Button
                 android:id="@+id/e"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="1"
-                android:text="Free" />
+                android:text="Free"
+                android:textColor="#fafafa"
+                android:textStyle="bold"
+                android:background="#0000"/>
 
             <Button
                 android:id="@+id/f"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="2"
-                android:text="Free" />
+                android:text="Free"
+                android:textColor="#fafafa"
+                android:textStyle="bold"
+                android:background="#0000"/>
         </TableRow>
 
         <TableRow
@@ -118,44 +145,104 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="0"
-                android:text="Free" />
+                android:text="Free"
+                android:textColor="#fafafa"
+                android:textStyle="bold"
+                android:background="#0000"/>
 
             <Button
                 android:id="@+id/h"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="1"
-                android:text="Free" />
+                android:text="Free"
+                android:textColor="#fafafa"
+                android:textStyle="bold"
+                android:background="#0000"/>
 
             <Button
                 android:id="@+id/i"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="2"
-                android:text="Free" />
+                android:text="Free"
+                android:textColor="#fafafa"
+                android:textStyle="bold"
+                android:background="#0000"/>
         </TableRow>
 
     </TableLayout>
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_width="342dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:textAlignment="center"
+        android:textColor="#fafafa"
         android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/revenge"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
 
     <Button
         android:id="@+id/revenge"
+        android:layout_width="110dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/button"
+        android:text="Rivincita"
+        android:textColor="#ff0000"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/Client"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/Server"
+        app:layout_constraintVertical_bias="0.876" />
+
+    <VideoView
+        android:id="@+id/videoView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Revenge"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/Server" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <VideoView
+        android:id="@+id/videoView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <VideoView
+        android:id="@+id/videoView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

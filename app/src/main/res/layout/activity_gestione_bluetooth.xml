@@ -4,24 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@drawable/background2"
     tools:context=".GestioneBluetooth">
 
-    <ImageButton
+    <TextView
         android:id="@+id/btnFindUnpairedDevices"
-        android:layout_width="72dp"
-        android:layout_height="74dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="160dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/rounded_button"
-        android:icon="@drawable/lente"
+        android:layout_width="82dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="136dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/button"
         android:onClick="btnDiscover"
         android:scaleType="fitCenter"
-        android:src="@drawable/lente"
-        android:textColor="#fafafa"
-        app:layout_constraintBottom_toTopOf="@+id/lvNewDevices"
+        android:text="Search"
+        android:textAlignment="center"
+        android:textColor="#ff0000"
+        android:textSize="20dp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
@@ -30,27 +33,50 @@
         android:layout_height="200dp"
         android:layout_below="@id/btnFindUnpairedDevices"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="104dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnFindUnpairedDevices" />
 
-    <Button
+    <TextView
         android:id="@+id/launchMain"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="480dp"
+        android:layout_width="93dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:background="@drawable/button"
         android:onClick="launchMainActivity"
-        android:text="Gioca"
+        android:scaleType="fitCenter"
+        android:text="Play"
+        android:textAlignment="center"
+        android:textColor="#ff0000"
+        android:textSize="20dp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/lvNewDevices"
+        app:layout_constraintVertical_bias="0.686" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="345dp"
+        android:layout_height="101dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Per inizare a giocare occorre cliccare Search, selezionare  il nome del Bluetooth del tuo avversario e poi cliccare il bottone PLAY."
+        android:textColor="#fafafa"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/btnFindUnpairedDevices"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </android.support.constraint.ConstraintLayout>
