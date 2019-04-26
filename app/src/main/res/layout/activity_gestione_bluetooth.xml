@@ -12,7 +12,7 @@
         android:layout_width="82dp"
         android:layout_height="38dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="136dp"
+        android:layout_marginTop="48dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/button"
         android:onClick="btnDiscover"
@@ -61,21 +61,17 @@
         app:layout_constraintTop_toBottomOf="@+id/lvNewDevices"
         app:layout_constraintVertical_bias="0.686" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="345dp"
-        android:layout_height="101dp"
-        android:layout_marginStart="8dp"
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Per inizare a giocare occorre cliccare Search, selezionare  il nome del Bluetooth del tuo avversario e poi cliccare il bottone PLAY."
-        android:textColor="#fafafa"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/btnFindUnpairedDevices"
+        android:onClick="Info"
+        android:text="Button"
+        app:layout_constraintBottom_toTopOf="@+id/lvNewDevices"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 

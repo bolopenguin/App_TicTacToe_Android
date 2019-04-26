@@ -1,10 +1,12 @@
 package com.example.progettoandroid;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -69,7 +71,6 @@ public class GestioneBluetooth extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gestione_bluetooth);
-        serverDevice=null;
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
@@ -164,5 +165,23 @@ public class GestioneBluetooth extends AppCompatActivity
         }
     }
 
+    public void Info (View view){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
+        alertDialogBuilder.setTitle("Istruzioni");
+        alertDialogBuilder.setIcon(R.drawable.icona);
+        alertDialogBuilder.setMessage("1)cliccare il pulsante Cerca e attendere la ricerca dei dispositivi bluetooth," +
+                "\n2)selezionare il device del tuo avversario," +
+                "\n3)cliccare Gioca");
+        alertDialogBuilder.setPositiveButton("Ok",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        Toast.makeText(GestioneBluetooth.this,"You clicked yes button",Toast.LENGTH_LONG).show();
+                    }
+                });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
 
 }

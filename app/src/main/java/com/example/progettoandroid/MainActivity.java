@@ -53,8 +53,8 @@ public class MainActivity extends AppCompatActivity
 
     static final UUID MY_UUID =
             UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
-    AcceptThread server = new AcceptThread();
-    ConnectThread client = new ConnectThread(serverDevice, MY_UUID);
+    AcceptThread server;
+    ConnectThread client;
 
 
     static BluetoothAdapter mBluetoothAdapter = GestioneBluetooth.mBluetoothAdapter;
@@ -109,6 +109,7 @@ public class MainActivity extends AppCompatActivity
     protected void onDestroy() {
         Log.d(TAG, "onDestroy: called.");
         super.onDestroy();
+        serverDevice=null;
         unregisterReceiver(mBroadcastReceiver);
         if(mConnectedThread != null){
             mConnectedThread.cancel();
