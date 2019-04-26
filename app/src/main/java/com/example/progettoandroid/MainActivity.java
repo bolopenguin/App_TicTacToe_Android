@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity
     private Button[] btnslots = new Button[9];
 
     private TextView info;
+    private TextView punteggio;
 
     private VideoView HaiVinto;
     private VideoView HaiPerso;
@@ -46,6 +47,9 @@ public class MainActivity extends AppCompatActivity
 
     // se vale 0 è il server se vale 1 è il client
     private boolean ruolo;
+
+    private int score1=0;
+    private int score2=0;
 
     static final UUID MY_UUID =
             UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
@@ -106,7 +110,6 @@ public class MainActivity extends AppCompatActivity
         Log.d(TAG, "onDestroy: called.");
         super.onDestroy();
         unregisterReceiver(mBroadcastReceiver);
-
         if(mConnectedThread != null){
             mConnectedThread.cancel();
             mConnectedThread = null;
@@ -146,7 +149,10 @@ public class MainActivity extends AppCompatActivity
         serverbtn = (Button)findViewById(R.id.Server);
         revengebtn = (Button)findViewById(R.id.revenge);
 
+        revengebtn.setVisibility(View.INVISIBLE);
+
         info = (TextView)findViewById(R.id.textView);
+        punteggio = (TextView) findViewById(R.id.textView2);
 
         HaiVinto = (VideoView)findViewById(R.id.videoView1);
         HaiVinto.setVideoPath("android.resource://com.example.progettoandroid/"+R.raw.haivinto);
@@ -247,19 +253,19 @@ public class MainActivity extends AppCompatActivity
         Log.d(TAG, "Changing btns server & client enable to " + b);
         clientbtn.setEnabled(b);
         serverbtn.setEnabled(b);
+        if (b) {
+            clientbtn.setVisibility(View.VISIBLE);
+            serverbtn.setVisibility(View.VISIBLE);
+        }else{
+            clientbtn.setVisibility(View.INVISIBLE);
+            serverbtn.setVisibility(View.INVISIBLE);
+        }
     }
 
     //metodo per diventare un client
     public void btnClient() {
 
-        if(client != null) {
-            client.cancel();
-            client = null;
-        }
-        if( server != null){
-            server.cancel();
-            server = null;
-        }
+        setButtonsBluetooth(false);
 
         ruolo = true;
         Log.d(TAG, "Starting Client Socket");
@@ -269,15 +275,7 @@ public class MainActivity extends AppCompatActivity
 
     //metodo per diventare un server
     public void btnServer() {
-
-        if(client != null) {
-            client.cancel();
-            client = null;
-        }
-        if( server != null){
-            server.cancel();
-            server = null;
-        }
+        setButtonsBluetooth(false);
 
         ruolo = false;
         Log.d(TAG, "Starting Server Socket");
@@ -308,16 +306,20 @@ public class MainActivity extends AppCompatActivity
                 setButtonsSlots(false);
                 info.setText("Hai Vinto");
                 revengebtn.setEnabled(true);
+                revengebtn.setVisibility(View.VISIBLE);
                 esito = 1;
-                HaiVinto.setVisibility(View.VISIBLE);
-                HaiVinto.start();
+                //HaiVinto.setVisibility(View.VISIBLE);
+                //HaiVinto.start();
+                score1++;
+                punteggio.setText(score1+" : "+score2);
             } else if(draw()){
                 setButtonsSlots(false);
                 info.setText("Pareggio");
                 revengebtn.setEnabled(true);
+                revengebtn.setVisibility(View.VISIBLE);
                 esito = 2;
-                HaiPareggiato.setVisibility(View.VISIBLE);
-                HaiPareggiato.start();
+                //HaiPareggiato.setVisibility(View.VISIBLE);
+                //HaiPareggiato.start();
             }
 
         String messaggio = Integer.toString(esito) + Integer.toString(position);
@@ -381,16 +383,20 @@ public class MainActivity extends AppCompatActivity
                 setButtonsSlots(false);
                 info.setText("Hai Perso");
                 revengebtn.setEnabled(true);
-                HaiPerso.setVisibility(View.VISIBLE);
-                HaiPerso.start();
+                revengebtn.setVisibility(View.VISIBLE);
+                score2++;
+                punteggio.setText(score1+" : "+score2);
+                //HaiPerso.setVisibility(View.VISIBLE);
+                //HaiPerso.start();
                 break;
 
             case 2:
                 setButtonsSlots(false);
                 info.setText("Pareggio");
                 revengebtn.setEnabled(true);
-                HaiPareggiato.setVisibility(View.VISIBLE);
-                HaiPareggiato.start();
+                revengebtn.setVisibility(View.VISIBLE);
+                //HaiPareggiato.setVisibility(View.VISIBLE);
+                //HaiPareggiato.start();
                 break;
 
             default:
@@ -401,8 +407,11 @@ public class MainActivity extends AppCompatActivity
 
     private void reset(){
         info.setText("");
-
+        //HaiPareggiato.setVisibility(View.INVISIBLE);
+        //HaiVinto.setVisibility(View.INVISIBLE);
+        //HaiPerso.setVisibility(View.INVISIBLE);
         revengebtn.setEnabled(false);
+        revengebtn.setVisibility(View.INVISIBLE);
 
         if(mConnectedThread != null){
             mConnectedThread.cancel();
