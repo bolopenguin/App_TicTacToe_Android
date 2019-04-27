@@ -62,15 +62,6 @@ public class GestioneBluetooth extends AppCompatActivity
 
 
     @Override
-    protected void onResume(){
-        super.onResume();
-        Log.d(TAG, "onResume: Called");
-
-        serverDevice = null;
-    }
-
-
-    @Override
     protected void onDestroy() {
         Log.d(TAG, "onDestroy: called.");
         super.onDestroy();
