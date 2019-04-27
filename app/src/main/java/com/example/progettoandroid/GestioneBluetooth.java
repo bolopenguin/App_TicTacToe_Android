@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -33,6 +34,8 @@ public class GestioneBluetooth extends AppCompatActivity
     static BluetoothAdapter mBluetoothAdapter;
 
     public static BluetoothDevice serverDevice;
+
+    Button gioca;
 
     //Broadcast Receiver for listing devices that are not yet paired
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
@@ -66,6 +69,7 @@ public class GestioneBluetooth extends AppCompatActivity
         super.onResume();
         Log.d(TAG, "onResume: Called");
 
+        gioca.setEnabled(true);
         serverDevice = null;
     }
 
@@ -91,6 +95,8 @@ public class GestioneBluetooth extends AppCompatActivity
         lvNewDevices = (ListView) findViewById(R.id.lvNewDevices);
         lvNewDevices.setOnItemClickListener(GestioneBluetooth.this);
 
+        gioca = (Button) findViewById(R.id.launchMain);
+        gioca.setEnabled(false);
     }
 
 
@@ -162,23 +168,15 @@ public class GestioneBluetooth extends AppCompatActivity
 
         serverDevice = mBTDevices.get(i);
         Toast.makeText(getApplicationContext(), "Bonded", Toast.LENGTH_SHORT).show();
-
+        gioca.setEnabled(true);
     }
 
 
     public void launchMainActivity(View view) {
-        //libera la listview
-
-        Log.d(TAG, "Avvio main Activity");
-        if(serverDevice == null){
-            Toast.makeText(getApplicationContext(), "Select a Device", Toast.LENGTH_SHORT).show();
-        }
-        else{
             mDeviceListAdapter.refreshEvents();
 
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
-        }
     }
 
     public void Info (View view){
