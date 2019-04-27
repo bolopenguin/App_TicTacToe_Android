@@ -308,9 +308,9 @@ public class MainActivity extends AppCompatActivity
         info.setText("Aspetta");
 
             if(ruolo) {
-                btnslots[position].setText("X");
+                btnslots[position].setBackgroundResource(R.drawable.x);
             } else {
-                btnslots[position].setText("O");
+                btnslots[position].setBackgroundResource(R.drawable.o);
             }
 
             //controllo se ci è stata vittora o pareggio
@@ -376,9 +376,9 @@ public class MainActivity extends AppCompatActivity
         occupati[position] = true;
 
         if(!ruolo) {
-            btnslots[position].setText("X");
+            btnslots[position].setBackgroundResource(R.drawable.x);
         } else {
-            btnslots[position].setText("O");
+            btnslots[position].setBackgroundResource(R.drawable.o);
         }
 
 
@@ -439,7 +439,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         for(int i=0; i<9; i++){
-            btnslots[i].setText("Free");
+            btnslots[i].setBackgroundResource(R.drawable.trasparente);
             cliccati[i] = false;
             occupati[i] = false;
         }
