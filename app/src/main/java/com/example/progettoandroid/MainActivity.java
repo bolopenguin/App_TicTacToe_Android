@@ -104,8 +104,6 @@ public class MainActivity extends AppCompatActivity
                 //HaiPareggiato.setVisibility(View.INVISIBLE);
                 //HaiVinto.setVisibility(View.INVISIBLE);
                 //HaiPerso.setVisibility(View.INVISIBLE);
-                revengebtn.setEnabled(false);
-                revengebtn.setVisibility(View.INVISIBLE);
 
                 for(int i=0; i<9; i++){
                     btnslots[i].setBackgroundResource(R.drawable.trasparente);
@@ -447,6 +445,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void reset(){
+        revengebtn.setEnabled(false);
+        revengebtn.setVisibility(View.INVISIBLE);
+
         if(mConnectedThread != null){
             mConnectedThread.cancel();
             mConnectedThread = null;

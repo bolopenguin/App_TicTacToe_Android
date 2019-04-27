@@ -108,7 +108,7 @@ public class GestioneBluetooth extends AppCompatActivity
     public  void abilitaDiscoverabilty(){
         Intent discoverableIntent =
                 new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-        discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 180);
+        discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 30);
         startActivity(discoverableIntent);
     }
 
@@ -200,7 +200,7 @@ public class GestioneBluetooth extends AppCompatActivity
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
-                        Toast.makeText(GestioneBluetooth.this,"You clicked yes button",Toast.LENGTH_LONG).show();
+
                     }
                 });
 
