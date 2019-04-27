@@ -99,6 +99,8 @@ public class MainActivity extends AppCompatActivity
             }
             else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
                 //Device has disconnected
+                revengebtn.setEnabled(false);
+                revengebtn.setVisibility(View.INVISIBLE);
                 Log.d(TAG, "BroadcastReceiver: Device Disconnected.");
                 info.setText("");
                 //HaiPareggiato.setVisibility(View.INVISIBLE);
@@ -125,11 +127,9 @@ public class MainActivity extends AppCompatActivity
     };
 
     @Override
-    protected void onDestroy() {
-        Log.d(TAG, "onDestroy: called.");
-        super.onDestroy();
-        serverDevice=null;
-        unregisterReceiver(mBroadcastReceiver);
+    protected void onPause() {
+        Log.d(TAG, "onPause: called.");
+        super.onPause();
 
         if(mConnectedThread != null){
             mConnectedThread.cancel();
@@ -143,14 +143,28 @@ public class MainActivity extends AppCompatActivity
             server.cancel();
             server = null;
         }
+
     }
 
-    @Override
-    protected void onPause(){
-        super.onPause();
-        Log.d(TAG, "onPause: called.");
 
-        finish();
+    @Override
+    protected void onDestroy() {
+        Log.d(TAG, "onDestroy: called.");
+        super.onDestroy();
+
+        if(mConnectedThread != null){
+            mConnectedThread.cancel();
+            mConnectedThread = null;
+        }
+        if(client != null) {
+            client.cancel();
+            client = null;
+        }
+        if( server != null){
+            server.cancel();
+            server = null;
+        }
+
     }
 
 

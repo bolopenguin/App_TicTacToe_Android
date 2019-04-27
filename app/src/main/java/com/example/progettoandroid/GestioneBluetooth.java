@@ -61,19 +61,19 @@ public class GestioneBluetooth extends AppCompatActivity
         }
     };
 
-    @Override
-    protected void onResume(){
-        super.onResume();
 
+    @Override
+    protected void onRestart() {
+        Log.d(TAG, "onRestart: called.");
+        super.onRestart();
         try {
             //set time in mili
-            Thread.sleep(3000);
+            Thread.sleep(2000);
 
         }catch (Exception e){
             e.printStackTrace();
         }
     }
-
 
     @Override
     protected void onDestroy() {
@@ -194,6 +194,7 @@ public class GestioneBluetooth extends AppCompatActivity
         alertDialogBuilder.setTitle("Istruzioni");
         alertDialogBuilder.setIcon(R.drawable.icona);
         alertDialogBuilder.setMessage("1)cliccare il pulsante Cerca e attendere la ricerca dei dispositivi bluetooth," +
+
                 "\n2)selezionare il device del tuo avversario," +
                 "\n3)cliccare Gioca");
         alertDialogBuilder.setPositiveButton("Ok",
