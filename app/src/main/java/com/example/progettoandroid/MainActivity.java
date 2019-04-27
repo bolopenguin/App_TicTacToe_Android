@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity
             }
             else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
                 //Device has disconnected
-                Log.d(TAG, "BroadcastReceiver: Device Connecting.");
+                Log.d(TAG, "BroadcastReceiver: Device Disconnected.");
                 setButtonsBluetooth(true);
             }
         }
@@ -111,6 +111,7 @@ public class MainActivity extends AppCompatActivity
         super.onDestroy();
         serverDevice=null;
         unregisterReceiver(mBroadcastReceiver);
+
         if(mConnectedThread != null){
             mConnectedThread.cancel();
             mConnectedThread = null;
@@ -124,6 +125,15 @@ public class MainActivity extends AppCompatActivity
             server = null;
         }
     }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        Log.d(TAG, "onPause: called.");
+
+        finish();
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -265,10 +275,9 @@ public class MainActivity extends AppCompatActivity
 
     //metodo per diventare un client
     public void btnClient() {
-
+        ruolo = true;
         setButtonsBluetooth(false);
 
-        ruolo = true;
         Log.d(TAG, "Starting Client Socket");
         client = new ConnectThread(serverDevice, MY_UUID);
         client.start();
@@ -276,9 +285,9 @@ public class MainActivity extends AppCompatActivity
 
     //metodo per diventare un server
     public void btnServer() {
+        ruolo = false;
         setButtonsBluetooth(false);
 
-        ruolo = false;
         Log.d(TAG, "Starting Server Socket");
         server = new AcceptThread();
         server.start();
@@ -567,6 +576,7 @@ public class MainActivity extends AppCompatActivity
             InputStream tmpIn = null;
             OutputStream tmpOut = null;
 
+
             // Get the input and output streams; using temp objects because
             // member streams are final.
             try {
@@ -583,6 +593,7 @@ public class MainActivity extends AppCompatActivity
             mmInStream = tmpIn;
             mmOutStream = tmpOut;
         }
+
 
         public void run() {
             mmBuffer = new byte[1024];

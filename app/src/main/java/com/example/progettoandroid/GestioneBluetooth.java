@@ -59,6 +59,16 @@ public class GestioneBluetooth extends AppCompatActivity
         }
     };
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        Log.d(TAG,"onPause: Called");
+
+        serverDevice = null;
+        mDeviceListAdapter.refreshEvents();
+    }
+
 
     @Override
     protected void onDestroy() {
