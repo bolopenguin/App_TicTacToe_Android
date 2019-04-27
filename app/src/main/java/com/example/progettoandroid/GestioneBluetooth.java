@@ -22,14 +22,13 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class GestioneBluetooth extends AppCompatActivity
-        implements AdapterView.OnItemClickListener{
+        implements AdapterView.OnItemClickListener, View.OnClickListener{
 
     final String TAG = "GestioneBluetooth";
 
     ListView lvNewDevices;
     public DeviceListAdapter mDeviceListAdapter;
     public ArrayList<BluetoothDevice> mBTDevices = new ArrayList<>();
-
 
     static BluetoothAdapter mBluetoothAdapter;
 
@@ -62,15 +61,17 @@ public class GestioneBluetooth extends AppCompatActivity
         }
     };
 
-
-
     @Override
     protected void onResume(){
         super.onResume();
-        Log.d(TAG, "onResume: Called");
 
-        gioca.setEnabled(true);
-        serverDevice = null;
+        try {
+            //set time in mili
+            Thread.sleep(3000);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 
@@ -84,6 +85,7 @@ public class GestioneBluetooth extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "OnCreate: called");
         setContentView(R.layout.activity_gestione_bluetooth);
 
         getSupportActionBar().hide();
@@ -97,6 +99,8 @@ public class GestioneBluetooth extends AppCompatActivity
 
         gioca = (Button) findViewById(R.id.launchMain);
         gioca.setEnabled(false);
+        gioca.setVisibility(View.INVISIBLE);
+        gioca.setOnClickListener(this);
     }
 
 
@@ -167,16 +171,22 @@ public class GestioneBluetooth extends AppCompatActivity
         Log.d(TAG, "Paired with " + deviceName);
 
         serverDevice = mBTDevices.get(i);
+
         Toast.makeText(getApplicationContext(), "Bonded", Toast.LENGTH_SHORT).show();
+
         gioca.setEnabled(true);
+        gioca.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void onClick(View v) {
+        gioca.setEnabled(false);
+        gioca.setVisibility(View.INVISIBLE);
 
-    public void launchMainActivity(View view) {
-            mDeviceListAdapter.refreshEvents();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
 
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+        mDeviceListAdapter.refreshEvents();
     }
 
     public void Info (View view){

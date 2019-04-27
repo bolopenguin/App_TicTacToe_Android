@@ -100,6 +100,27 @@ public class MainActivity extends AppCompatActivity
             else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
                 //Device has disconnected
                 Log.d(TAG, "BroadcastReceiver: Device Disconnected.");
+                info.setText("");
+                //HaiPareggiato.setVisibility(View.INVISIBLE);
+                //HaiVinto.setVisibility(View.INVISIBLE);
+                //HaiPerso.setVisibility(View.INVISIBLE);
+                revengebtn.setEnabled(false);
+                revengebtn.setVisibility(View.INVISIBLE);
+
+                for(int i=0; i<9; i++){
+                    btnslots[i].setBackgroundResource(R.drawable.trasparente);
+                    cliccati[i] = false;
+                    occupati[i] = false;
+                }
+
+                try {
+                    //set time in mili
+                    Thread.sleep(2000);
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
                 setButtonsBluetooth(true);
             }
         }
@@ -186,6 +207,14 @@ public class MainActivity extends AppCompatActivity
 
         revengebtn.setEnabled(false);
         setButtonsSlots(false);
+
+        try {
+            //set time in mili
+            Thread.sleep(2000);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -418,13 +447,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void reset(){
-        info.setText("");
-        //HaiPareggiato.setVisibility(View.INVISIBLE);
-        //HaiVinto.setVisibility(View.INVISIBLE);
-        //HaiPerso.setVisibility(View.INVISIBLE);
-        revengebtn.setEnabled(false);
-        revengebtn.setVisibility(View.INVISIBLE);
-
         if(mConnectedThread != null){
             mConnectedThread.cancel();
             mConnectedThread = null;
@@ -437,13 +459,6 @@ public class MainActivity extends AppCompatActivity
             server.cancel();
             server = null;
         }
-
-        for(int i=0; i<9; i++){
-            btnslots[i].setBackgroundResource(R.drawable.trasparente);
-            cliccati[i] = false;
-            occupati[i] = false;
-        }
-
     }
 
     //Classe per Gestire il Client
