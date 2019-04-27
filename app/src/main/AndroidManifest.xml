@@ -15,11 +15,14 @@
         android:label="Tris Bluetooth"
         android:roundIcon="@drawable/icona"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat">
+        android:theme="@style/AppTheme">
 
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".GestioneBluetooth"/>
-        <activity android:name=".SplashActivity">
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".GestioneBluetooth"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

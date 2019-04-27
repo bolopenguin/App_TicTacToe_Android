@@ -59,14 +59,14 @@ public class GestioneBluetooth extends AppCompatActivity
         }
     };
 
-    @Override
-    protected void onStop() {
-        super.onStop();
 
-        Log.d(TAG,"onPause: Called");
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        Log.d(TAG, "onResume: Called");
 
         serverDevice = null;
-        mDeviceListAdapter.refreshEvents();
     }
 
 
@@ -81,6 +81,8 @@ public class GestioneBluetooth extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gestione_bluetooth);
+
+        getSupportActionBar().hide();
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
@@ -165,11 +167,15 @@ public class GestioneBluetooth extends AppCompatActivity
 
 
     public void launchMainActivity(View view) {
+        //libera la listview
+
         Log.d(TAG, "Avvio main Activity");
         if(serverDevice == null){
             Toast.makeText(getApplicationContext(), "Select a Device", Toast.LENGTH_SHORT).show();
         }
         else{
+            mDeviceListAdapter.refreshEvents();
+
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }

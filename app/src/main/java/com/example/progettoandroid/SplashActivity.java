@@ -16,6 +16,9 @@ public class SplashActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        getSupportActionBar().hide();
+
         videoView = (VideoView) findViewById(R.id.videoView);
 
         Uri video = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.bumper);
