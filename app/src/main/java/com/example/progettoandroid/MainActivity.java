@@ -1,12 +1,14 @@
 package com.example.progettoandroid;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -14,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -24,6 +27,7 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.UUID;
 import java.util.logging.Handler;
+
 
 public class MainActivity extends AppCompatActivity
         implements  View.OnClickListener{
@@ -41,6 +45,8 @@ public class MainActivity extends AppCompatActivity
     private VideoView HaiVinto;
     private VideoView HaiPerso;
     private VideoView HaiPareggiato;
+
+    private TableLayout Tabella;
 
     private boolean cliccati[] = new boolean[9];
     private boolean occupati[] = new boolean[9];
@@ -103,22 +109,14 @@ public class MainActivity extends AppCompatActivity
                 revengebtn.setVisibility(View.INVISIBLE);
                 Log.d(TAG, "BroadcastReceiver: Device Disconnected.");
                 info.setText("");
-                //HaiPareggiato.setVisibility(View.INVISIBLE);
-                //HaiVinto.setVisibility(View.INVISIBLE);
-                //HaiPerso.setVisibility(View.INVISIBLE);
+                HaiPareggiato.setVisibility(View.INVISIBLE);
+                HaiVinto.setVisibility(View.INVISIBLE);
+                HaiPerso.setVisibility(View.INVISIBLE);
 
                 for(int i=0; i<9; i++){
                     btnslots[i].setBackgroundResource(R.drawable.trasparente);
                     cliccati[i] = false;
                     occupati[i] = false;
-                }
-
-                try {
-                    //set time in mili
-                    Thread.sleep(2000);
-
-                }catch (Exception e){
-                    e.printStackTrace();
                 }
 
                 setButtonsBluetooth(true);
@@ -200,6 +198,8 @@ public class MainActivity extends AppCompatActivity
         info = (TextView)findViewById(R.id.textView);
         punteggio = (TextView) findViewById(R.id.textView2);
 
+        Tabella=(TableLayout) findViewById(R.id.tableLayout);
+
         HaiVinto = (VideoView)findViewById(R.id.videoView1);
         HaiVinto.setVideoPath("android.resource://com.example.progettoandroid/"+R.raw.haivinto);
         HaiVinto.setVisibility(View.INVISIBLE);
@@ -216,7 +216,6 @@ public class MainActivity extends AppCompatActivity
         serverbtn.setOnClickListener(this);
         for(Button listen: btnslots) listen.setOnClickListener(this);
         revengebtn.setOnClickListener(this);
-
         revengebtn.setEnabled(false);
         setButtonsSlots(false);
 
@@ -361,8 +360,15 @@ public class MainActivity extends AppCompatActivity
                 revengebtn.setEnabled(true);
                 revengebtn.setVisibility(View.VISIBLE);
                 esito = 1;
-                //HaiVinto.setVisibility(View.VISIBLE);
-                //HaiVinto.start();
+                HaiVinto.setVisibility(View.VISIBLE);
+                HaiVinto.start();
+                Tabella.setVisibility(View.INVISIBLE);
+                HaiVinto.postDelayed(new Runnable() {
+                    public void run() {
+                        HaiVinto.setVisibility(View.GONE);
+                        Tabella.setVisibility(View.VISIBLE);
+                    }
+                }, 6000);
                 score1++;
                 punteggio.setText(score1+" : "+score2);
             } else if(draw()){
@@ -371,8 +377,15 @@ public class MainActivity extends AppCompatActivity
                 revengebtn.setEnabled(true);
                 revengebtn.setVisibility(View.VISIBLE);
                 esito = 2;
-                //HaiPareggiato.setVisibility(View.VISIBLE);
-                //HaiPareggiato.start();
+                HaiPareggiato.setVisibility(View.VISIBLE);
+                HaiPareggiato.start();
+                Tabella.setVisibility(View.INVISIBLE);
+                HaiPareggiato.postDelayed(new Runnable() {
+                    public void run() {
+                        HaiPareggiato.setVisibility(View.GONE);
+                        Tabella.setVisibility(View.VISIBLE);
+                    }
+                }, 6000);
             }
 
         String messaggio = Integer.toString(esito) + Integer.toString(position);
@@ -439,8 +452,15 @@ public class MainActivity extends AppCompatActivity
                 revengebtn.setVisibility(View.VISIBLE);
                 score2++;
                 punteggio.setText(score1+" : "+score2);
-                //HaiPerso.setVisibility(View.VISIBLE);
-                //HaiPerso.start();
+                HaiPerso.setVisibility(View.VISIBLE);
+                HaiPerso.start();
+                Tabella.setVisibility(View.INVISIBLE);
+                HaiPerso.postDelayed(new Runnable() {
+                    public void run() {
+                        HaiPerso.setVisibility(View.GONE);
+                        Tabella.setVisibility(View.VISIBLE);
+                    }
+                }, 6000);
                 break;
 
             case 2:
@@ -448,14 +468,20 @@ public class MainActivity extends AppCompatActivity
                 info.setText("Pareggio");
                 revengebtn.setEnabled(true);
                 revengebtn.setVisibility(View.VISIBLE);
-                //HaiPareggiato.setVisibility(View.VISIBLE);
-                //HaiPareggiato.start();
+                HaiPareggiato.setVisibility(View.VISIBLE);
+                HaiPareggiato.start();
+                Tabella.setVisibility(View.INVISIBLE);
+                HaiPareggiato.postDelayed(new Runnable() {
+                    public void run() {
+                        HaiPareggiato.setVisibility(View.GONE);
+                        Tabella.setVisibility(View.VISIBLE);
+                    }
+                }, 6000);
                 break;
 
             default:
                 break;
         }
-
     }
 
     private void reset(){
@@ -686,4 +712,27 @@ public class MainActivity extends AppCompatActivity
         mConnectedThread = new ConnectedThread(mmSocket);
         mConnectedThread.start();
     }
+
+    public void Info (View view) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
+        alertDialogBuilder.setTitle("Istruzioni");
+        alertDialogBuilder.setIcon(R.drawable.icona);
+        alertDialogBuilder.setMessage("1)Decidere chi tra te e i tuo avversario inizia a giocare," +
+
+                "\n2)Colui che inizia sarà giocatore 1 e l'altro giocatore 2," +
+                "\n3)Vince il giocatore che riesce a disporre tre dei propri simboli in linea retta orizzontale, verticale o diagonale"+
+                "\n4)Per continuare il gioco cliccate entrambi Rivincita, in ogni caso il punteggio continuerà ad essere presente nella parte altra dello schermo"+
+                "\nATTENZIONE!!! NON CLICCARE NESSUN BOTTONE ALL'INFUORI DI QUELLI PRESENTI NELL'AREA DI GIOCO");
+        alertDialogBuilder.setPositiveButton("Ok",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+
+                    }
+                });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
 }
