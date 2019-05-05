@@ -105,6 +105,7 @@ public class MainActivity extends AppCompatActivity
             }
             else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
                 //Device has disconnected
+                mBluetoothAdapter.disable();
                 revengebtn.setEnabled(false);
                 revengebtn.setVisibility(View.INVISIBLE);
                 Log.d(TAG, "BroadcastReceiver: Device Disconnected.");
@@ -260,10 +261,12 @@ public class MainActivity extends AppCompatActivity
                     break;
 
                 case R.id.Client:
+                    mBluetoothAdapter.enable();
                     btnClient();
                     break;
 
                 case R.id.Server:
+                    mBluetoothAdapter.enable();
                     btnServer();
                     break;
 
