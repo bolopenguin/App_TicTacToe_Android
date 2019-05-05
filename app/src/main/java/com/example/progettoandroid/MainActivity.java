@@ -305,6 +305,7 @@ public class MainActivity extends AppCompatActivity
 
         Log.d(TAG, "Starting Client Socket");
         client = new ConnectThread(serverDevice, MY_UUID);
+
         client.start();
     }
 
@@ -373,7 +374,13 @@ public class MainActivity extends AppCompatActivity
 
         String messaggio = Integer.toString(esito) + Integer.toString(position);
         byte[] bytes = messaggio.getBytes() ;
-        mConnectedThread.write(bytes);
+
+        try {
+            mConnectedThread.write(bytes);
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+            reset();
+        }
     }
 
     //funzione che verifica se il giocatore ha vinto (da rivedere)
