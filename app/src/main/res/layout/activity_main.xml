@@ -9,39 +9,37 @@
 
     <Button
         android:id="@+id/Client"
-        android:layout_width="111dp"
-        android:layout_height="52dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="36dp"
-        android:background="@drawable/button"
-        android:text="X"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/cerchio"
         android:fontFamily="@font/merienda_one"
+        android:text="X"
         android:textAlignment="center"
-        android:textColor="#ff0000"
+        android:textColor="#fafafa"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/revenge"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/Server" />
 
     <Button
         android:id="@+id/Server"
-        android:layout_width="112dp"
-        android:layout_height="47dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="28dp"
-        android:background="@drawable/button"
-        android:text="O"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/cerchio"
         android:fontFamily="@font/merienda_one"
-        android:textColor="#ff0000"
+        android:text="O"
+        android:textColor="#fafafa"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.836"
         app:layout_constraintStart_toEndOf="@+id/revenge" />
 
     <TableLayout
@@ -201,6 +199,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/button"
         android:text="Rivincita"
         android:textColor="#ff0000"
@@ -208,8 +207,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/Client"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/Server"
-        app:layout_constraintVertical_bias="0.876" />
+        app:layout_constraintTop_toTopOf="@+id/Server" />
 
     <VideoView
         android:id="@+id/videoView1"
