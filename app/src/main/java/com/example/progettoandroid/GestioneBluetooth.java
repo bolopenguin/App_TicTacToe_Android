@@ -66,12 +66,16 @@ public class GestioneBluetooth extends AppCompatActivity
     protected void onDestroy() {
         Log.d(TAG, "onDestroy: called.");
         super.onDestroy();
+        mBluetoothAdapter.disable();
         unregisterReceiver(mBroadcastReceiver);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mBluetoothAdapter.disable();
+
         Log.d(TAG, "OnCreate: called");
         setContentView(R.layout.activity_gestione_bluetooth);
 
