@@ -74,14 +74,13 @@ public class GestioneBluetooth extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mBluetoothAdapter.disable();
-
         Log.d(TAG, "OnCreate: called");
         setContentView(R.layout.activity_gestione_bluetooth);
 
         getSupportActionBar().hide();
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        mBluetoothAdapter.disable();
 
         //Lista dei device con la discovery
         mBTDevices = new ArrayList<>();
