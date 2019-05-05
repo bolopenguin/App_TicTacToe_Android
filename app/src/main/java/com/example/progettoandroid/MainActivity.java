@@ -176,6 +176,7 @@ public class MainActivity extends AppCompatActivity
         revengebtn.setVisibility(View.INVISIBLE);
 
         info = (TextView)findViewById(R.id.textView);
+        info.setText("Scegli il tuo simbolo...");
         punteggio = (TextView) findViewById(R.id.textView2);
 
         Tabella=(TableLayout) findViewById(R.id.tableLayout);
@@ -201,7 +202,7 @@ public class MainActivity extends AppCompatActivity
 
         try {
             //set time in mili
-            Thread.sleep(2000);
+            Thread.sleep(1000);
 
         }catch (Exception e){
             e.printStackTrace();

@@ -63,19 +63,6 @@ public class GestioneBluetooth extends AppCompatActivity
 
 
     @Override
-    protected void onRestart() {
-        Log.d(TAG, "onRestart: called.");
-        super.onRestart();
-        try {
-            //set time in mili
-            Thread.sleep(2000);
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    @Override
     protected void onDestroy() {
         Log.d(TAG, "onDestroy: called.");
         super.onDestroy();
@@ -155,8 +142,6 @@ public class GestioneBluetooth extends AppCompatActivity
         //first cancel discovery because its very memory intensive.
         Log.d(TAG, "btnDiscover: Canceling discovery.");
         mBluetoothAdapter.cancelDiscovery();
-
-        Toast.makeText(getApplicationContext(), "Bonding", Toast.LENGTH_SHORT).show();
 
         Log.d(TAG, "onItemClick: You Clicked on a device.");
         String deviceName = mBTDevices.get(i).getName();

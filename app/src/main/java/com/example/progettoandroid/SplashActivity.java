@@ -34,7 +34,7 @@ public class SplashActivity extends AppCompatActivity {
         Bumper.setVideoPath("android.resource://com.example.progettoandroid/" + R.raw.logobumper);
         Bumper.start();
         /*if(!Bumper.isPlaying()){
-            Bumper.seekTo(7999);
+
         }*/
         Bumper.postDelayed(new Runnable() {
             public void run() {
@@ -46,6 +46,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onRestart(){
         super.onRestart();
+        Bumper.seekTo(7999);
         startActivity(new Intent(SplashActivity.this, GestioneBluetooth.class));
     }
 }
