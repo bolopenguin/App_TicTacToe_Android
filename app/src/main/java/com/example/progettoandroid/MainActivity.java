@@ -124,26 +124,6 @@ public class MainActivity extends AppCompatActivity
         }
     };
 
-    @Override
-    protected void onPause() {
-        Log.d(TAG, "onPause: called.");
-        super.onPause();
-
-        if(mConnectedThread != null){
-            mConnectedThread.cancel();
-            mConnectedThread = null;
-        }
-        if(client != null) {
-            client.cancel();
-            client = null;
-        }
-        if( server != null){
-            server.cancel();
-            server = null;
-        }
-
-    }
-
 
     @Override
     protected void onDestroy() {
@@ -356,9 +336,7 @@ public class MainActivity extends AppCompatActivity
             //controllo se ci è stata vittora o pareggio
             if(victory()) {
                 setButtonsSlots(false);
-                info.setText("Hai Vinto");
-                revengebtn.setEnabled(true);
-                revengebtn.setVisibility(View.VISIBLE);
+                info.setText("");
                 esito = 1;
                 HaiVinto.setVisibility(View.VISIBLE);
                 HaiVinto.start();
@@ -367,15 +345,15 @@ public class MainActivity extends AppCompatActivity
                     public void run() {
                         HaiVinto.setVisibility(View.GONE);
                         Tabella.setVisibility(View.VISIBLE);
+                        revengebtn.setEnabled(true);
+                        revengebtn.setVisibility(View.VISIBLE);
                     }
                 }, 6000);
                 score1++;
                 punteggio.setText(score1+" : "+score2);
             } else if(draw()){
                 setButtonsSlots(false);
-                info.setText("Pareggio");
-                revengebtn.setEnabled(true);
-                revengebtn.setVisibility(View.VISIBLE);
+                info.setText("");
                 esito = 2;
                 HaiPareggiato.setVisibility(View.VISIBLE);
                 HaiPareggiato.start();
@@ -384,6 +362,8 @@ public class MainActivity extends AppCompatActivity
                     public void run() {
                         HaiPareggiato.setVisibility(View.GONE);
                         Tabella.setVisibility(View.VISIBLE);
+                        revengebtn.setEnabled(true);
+                        revengebtn.setVisibility(View.VISIBLE);
                     }
                 }, 6000);
             }
@@ -447,9 +427,7 @@ public class MainActivity extends AppCompatActivity
 
             case 1:
                 setButtonsSlots(false);
-                info.setText("Hai Perso");
-                revengebtn.setEnabled(true);
-                revengebtn.setVisibility(View.VISIBLE);
+                info.setText("");
                 score2++;
                 punteggio.setText(score1+" : "+score2);
                 HaiPerso.setVisibility(View.VISIBLE);
@@ -459,15 +437,15 @@ public class MainActivity extends AppCompatActivity
                     public void run() {
                         HaiPerso.setVisibility(View.GONE);
                         Tabella.setVisibility(View.VISIBLE);
+                        revengebtn.setEnabled(true);
+                        revengebtn.setVisibility(View.VISIBLE);
                     }
                 }, 6000);
                 break;
 
             case 2:
                 setButtonsSlots(false);
-                info.setText("Pareggio");
-                revengebtn.setEnabled(true);
-                revengebtn.setVisibility(View.VISIBLE);
+                info.setText("");
                 HaiPareggiato.setVisibility(View.VISIBLE);
                 HaiPareggiato.start();
                 Tabella.setVisibility(View.INVISIBLE);
@@ -475,6 +453,8 @@ public class MainActivity extends AppCompatActivity
                     public void run() {
                         HaiPareggiato.setVisibility(View.GONE);
                         Tabella.setVisibility(View.VISIBLE);
+                        revengebtn.setEnabled(true);
+                        revengebtn.setVisibility(View.VISIBLE);
                     }
                 }, 6000);
                 break;
@@ -485,6 +465,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void reset(){
+        info.setText("Attendere...");
         revengebtn.setEnabled(false);
         revengebtn.setVisibility(View.INVISIBLE);
 
