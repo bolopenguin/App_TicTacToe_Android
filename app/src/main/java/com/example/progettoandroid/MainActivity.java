@@ -708,7 +708,7 @@ public class MainActivity extends AppCompatActivity
     public void Info (View view) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
         alertDialogBuilder.setTitle("Istruzioni");
-        alertDialogBuilder.setIcon(R.drawable.ic_stat_name);
+        alertDialogBuilder.setIcon(R.drawable.bluetoothconnection);
         alertDialogBuilder.setMessage("1)Decidere chi tra te e i tuo avversario inizia a giocare," +
 
                 "\n2)Colui che inizia sarà giocatore 1 e l'altro giocatore 2," +
