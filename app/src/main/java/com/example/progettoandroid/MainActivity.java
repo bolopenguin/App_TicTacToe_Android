@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity
                 revengebtn.setEnabled(false);
                 revengebtn.setVisibility(View.INVISIBLE);
                 Log.d(TAG, "BroadcastReceiver: Device Disconnected.");
-                info.setText("");
+                info.setText ("Scegli il tuo simbolo... (prima chi è O poi X)");
                 HaiPareggiato.setVisibility(View.INVISIBLE);
                 HaiVinto.setVisibility(View.INVISIBLE);
                 HaiPerso.setVisibility(View.INVISIBLE);
@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity
         revengebtn.setVisibility(View.INVISIBLE);
 
         info = (TextView)findViewById(R.id.textView);
-        info.setText("Scegli il tuo simbolo...");
+        info.setText("Scegli il tuo simbolo... (prima chi è O poi X)");
         punteggio = (TextView) findViewById(R.id.textView2);
 
         Tabella=(TableLayout) findViewById(R.id.tableLayout);
