@@ -180,7 +180,7 @@ public class GestioneBluetooth extends AppCompatActivity
     public void Info (View view){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
         alertDialogBuilder.setTitle("Istruzioni");
-        alertDialogBuilder.setIcon(R.drawable.icona);
+        alertDialogBuilder.setIcon(R.drawable.bolle);
         alertDialogBuilder.setMessage("1)cliccare il pulsante Cerca e attendere la ricerca dei dispositivi bluetooth," +
 
                 "\n2)selezionare il device del tuo avversario," +
