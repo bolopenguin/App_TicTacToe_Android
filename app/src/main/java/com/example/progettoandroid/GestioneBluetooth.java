@@ -162,6 +162,14 @@ public class GestioneBluetooth extends AppCompatActivity
 
         Toast.makeText(getApplicationContext(), "Bonded", Toast.LENGTH_SHORT).show();
 
+        try {
+            //set time in mili
+            Thread.sleep(1000);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         gioca.setEnabled(true);
         gioca.setVisibility(View.VISIBLE);
     }

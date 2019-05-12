@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity
 
         try {
             //set time in mili
-            Thread.sleep(1000);
+            Thread.sleep(500);
 
         }catch (Exception e){
             e.printStackTrace();
