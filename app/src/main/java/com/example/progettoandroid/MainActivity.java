@@ -713,10 +713,9 @@ public class MainActivity extends AppCompatActivity
         alertDialogBuilder.setIcon(R.drawable.bluetoothconnection);
         alertDialogBuilder.setMessage("1)Decidere chi tra te e i tuo avversario inizia a giocare," +
 
-                "\n2)Colui che inizia sarà giocatore 1 e l'altro giocatore 2," +
+                "\n2)Colui che inizia sarà la X e l'altro giocatore il O," +
                 "\n3)Vince il giocatore che riesce a disporre tre dei propri simboli in linea retta orizzontale, verticale o diagonale"+
-                "\n4)Per continuare il gioco cliccate entrambi Rivincita, in ogni caso il punteggio continuerà ad essere presente nella parte altra dello schermo"+
-                "\nATTENZIONE!!! NON CLICCARE NESSUN BOTTONE ALL'INFUORI DI QUELLI PRESENTI NELL'AREA DI GIOCO");
+                "\n4)Per continuare il gioco cliccate entrambi Rivincita, in ogni caso il punteggio continuerà ad essere presente nella parte altra dello schermo");
         alertDialogBuilder.setPositiveButton("Ok",
                 new DialogInterface.OnClickListener() {
                     @Override
