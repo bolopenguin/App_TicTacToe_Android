@@ -478,6 +478,7 @@ public class MainActivity extends AppCompatActivity
         info.setText("Attendere...");
         revengebtn.setEnabled(false);
         revengebtn.setVisibility(View.INVISIBLE);
+        ruolo = false;
 
         if(mConnectedThread != null){
             mConnectedThread.cancel();
