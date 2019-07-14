@@ -90,6 +90,7 @@ public class MainActivity extends AppCompatActivity
                     setButtonsSlots(true);
                     info.setText("Tocca a te");
                 } else{
+                    btnServer();
                     info.setText("Aspetta");
                 }
 
@@ -178,7 +179,7 @@ public class MainActivity extends AppCompatActivity
         revengebtn.setVisibility(View.INVISIBLE);
 
         info = (TextView)findViewById(R.id.textView);
-        info.setText("Scegli il tuo simbolo... (prima chi è O poi X)");
+        info.setText("Scegli il tuo simbolo");
         punteggio = (TextView) findViewById(R.id.textView2);
 
         Tabella=(TableLayout) findViewById(R.id.tableLayout);
