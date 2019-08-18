@@ -66,7 +66,6 @@ public class GestioneBluetooth extends AppCompatActivity
     protected void onDestroy() {
         Log.d(TAG, "onDestroy: called.");
         super.onDestroy();
-        mBluetoothAdapter.disable();
         unregisterReceiver(mBroadcastReceiver);
     }
 
@@ -91,6 +90,10 @@ public class GestioneBluetooth extends AppCompatActivity
         gioca.setEnabled(false);
         gioca.setVisibility(View.INVISIBLE);
         gioca.setOnClickListener(this);
+
+
+        IntentFilter discoverDevicesIntent = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+        registerReceiver(mBroadcastReceiver, discoverDevicesIntent);
     }
 
 
@@ -117,16 +120,9 @@ public class GestioneBluetooth extends AppCompatActivity
 
             mBluetoothAdapter.startDiscovery();
             Log.d(TAG, "btnDiscover: Looking for unpaired devices.");
-
-            IntentFilter discoverDevicesIntent = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-            registerReceiver(mBroadcastReceiver, discoverDevicesIntent);
-        }
-        if(!mBluetoothAdapter.isDiscovering()){
+        } else {
             mBluetoothAdapter.startDiscovery();
             Log.d(TAG, "btnDiscover: Looking for unpaired devices.");
-
-            IntentFilter discoverDevicesIntent = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-            registerReceiver(mBroadcastReceiver, discoverDevicesIntent);
         }
 
 

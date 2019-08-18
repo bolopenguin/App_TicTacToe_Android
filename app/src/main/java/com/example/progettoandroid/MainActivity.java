@@ -59,8 +59,9 @@ public class MainActivity extends AppCompatActivity
 
     static final UUID MY_UUID =
             UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
-    AcceptThread server;
     ConnectThread client;
+    AcceptThread server;
+
 
 
     static BluetoothAdapter mBluetoothAdapter = GestioneBluetooth.mBluetoothAdapter;
@@ -109,7 +110,7 @@ public class MainActivity extends AppCompatActivity
                 revengebtn.setEnabled(false);
                 revengebtn.setVisibility(View.INVISIBLE);
                 Log.d(TAG, "BroadcastReceiver: Device Disconnected.");
-                info.setText ("Scegli il tuo simbolo... (prima chi è O poi X)");
+                info.setText ("Scegli il tuo simbolo");
                 HaiPareggiato.setVisibility(View.INVISIBLE);
                 HaiVinto.setVisibility(View.INVISIBLE);
                 HaiPerso.setVisibility(View.INVISIBLE);
@@ -133,18 +134,7 @@ public class MainActivity extends AppCompatActivity
 
         mBluetoothAdapter.disable();
 
-        if(mConnectedThread != null){
-            mConnectedThread.cancel();
-            mConnectedThread = null;
-        }
-        if(client != null) {
-            client.cancel();
-            client = null;
-        }
-        if( server != null){
-            server.cancel();
-            server = null;
-        }
+        closeSockets();
 
     }
 
@@ -481,6 +471,11 @@ public class MainActivity extends AppCompatActivity
         revengebtn.setVisibility(View.INVISIBLE);
         ruolo = false;
 
+        closeSockets();
+    }
+
+    private void closeSockets() {
+
         if(mConnectedThread != null){
             mConnectedThread.cancel();
             mConnectedThread = null;
@@ -511,7 +506,7 @@ public class MainActivity extends AppCompatActivity
             try {
                 // Get a BluetoothSocket to connect with the given BluetoothDevice.
                 // MY_UUID is the app's UUID string, also used in the server code.
-                tmp = device.createRfcommSocketToServiceRecord(myUuid);
+                tmp = mmDevice.createRfcommSocketToServiceRecord(myUuid);
             } catch (IOException e) {
                 Log.e(TAG, "Socket's create() method failed", e);
             }
@@ -521,7 +516,6 @@ public class MainActivity extends AppCompatActivity
         public void run() {
             // Cancel discovery because it otherwise slows down the connection.
             mBluetoothAdapter.cancelDiscovery();
-            BluetoothSocket socket = null;
 
             Log.i(TAG, "RUN mConnectThread ");
 
@@ -596,7 +590,9 @@ public class MainActivity extends AppCompatActivity
 
 
                 if (socket != null) {
+                    cancel();
                     connected(socket);
+                    break;
                 }
             }
         }
@@ -615,7 +611,6 @@ public class MainActivity extends AppCompatActivity
 
     //questa classe gestisce lo scambio di messaggi
     private class ConnectedThread extends Thread {
-        private Handler handler;
 
         private final BluetoothSocket mmSocket;
         private final InputStream mmInStream;
@@ -678,8 +673,6 @@ public class MainActivity extends AppCompatActivity
 
         // Call this from the main activity to send data to the remote device.
         public void write(byte[] bytes) {
-            String text = new String(bytes, Charset.defaultCharset());
-            Log.d(TAG, "write: Writing to outputstream: " + text);
             try {
                 mmOutStream.write(bytes);
             } catch (IOException e) {
